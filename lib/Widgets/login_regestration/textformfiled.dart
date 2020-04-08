@@ -44,7 +44,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
       elevation: large ? 12 : (medium ? 10 : 8),
       child: TextFormField(
         minLines: 1,
-        
         maxLines: widget.maline,
         obscureText: widget.obscureText,
         textDirection: TextDirection.rtl,
@@ -56,10 +55,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
           suffixIcon: Icon(widget.icon, color: Colors.orange[600], size: 20),
           hintText: widget.hint,
           // labelText: lableText,
-           // errorBorder: ,
-          
-           errorMaxLines: 1,
-            hasFloatingPlaceholder: true,
+          // errorBorder: ,
+
+          errorMaxLines: 1,
+          hasFloatingPlaceholder: true,
           alignLabelWithHint: true,
           labelStyle: TextStyle(
               // textBaseline: TextBaseline.alphabetic,

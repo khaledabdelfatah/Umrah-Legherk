@@ -44,8 +44,8 @@ class _Request_ScreenState extends State<Request_Screen> {
   Future getImage() async {
     return await ImagePicker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 400,
-      maxWidth: 400,
+      maxHeight: 300,
+      maxWidth: 300,
     ).then((img) {
       setState(() {
         _image = img;
@@ -209,13 +209,13 @@ class _Request_ScreenState extends State<Request_Screen> {
                     print(_detailsController.text +
                         '\n from RequestingScreen.dart \n' +
                         _requestNameController.text);
-                    // await uploadFile();
-                    // await _request_service.add_request(
-                    //   details: _detailsController.text,
-                    //   status: dropDownValue,
-                    //   title: _requestNameController.text,
-                    //   imgUrl: imgUrl,
-                    // );
+                    await uploadFile();
+                    await _request_service.add_request(
+                      details: _detailsController.text,
+                      status: dropDownValue,
+                      title: _requestNameController.text,
+                      imgUrl: imgUrl,
+                    );
                     setState(() {
                       disable = false;
                     });

@@ -65,8 +65,8 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
   Future getImage() async {
     return await ImagePicker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 200,
-      maxWidth: 200,
+      maxHeight: 300,
+      maxWidth: 300,
     ).then((img) {
       setState(() {
         _image = img;
@@ -272,15 +272,17 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
                                           setState(() {
                                             _saving = false;
                                           });
-if(e.code=='ERROR_EMAIL_ALREADY_IN_USE'){
-  setState(() {
-    emailError="هذا البريد الالكتروني مسجل لدينا بالفعل";
-  });
-}else{
-  setState(() {
-    emailError=e.code;
-  });
-}
+                                          if (e.code ==
+                                              'ERROR_EMAIL_ALREADY_IN_USE') {
+                                            setState(() {
+                                              emailError =
+                                                  "هذا البريد الالكتروني مسجل لدينا بالفعل";
+                                            });
+                                          } else {
+                                            setState(() {
+                                              emailError = e.code;
+                                            });
+                                          }
                                           ////
                                         }
                                       }

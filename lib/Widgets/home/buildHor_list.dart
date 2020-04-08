@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts_arabic/fonts.dart';
 import '../login_regestration/textformfiled.dart';
 
 buildList(
@@ -40,16 +41,18 @@ buildList(
                       color: Colors.white,
                       shape: BoxShape.circle,
                     ),
-                    child: new Container(
-                        width: 120.0,
-                        height: 190.0,
-                        decoration: new BoxDecoration(
-                          shape: BoxShape.circle,
-                          image: new DecorationImage(
-                            fit: BoxFit.fill,
-                            image: imgPath,
-                          ),
-                        )),
+                    child: InkWell(
+                      child: new Container(
+                          width: 120.0,
+                          height: 190.0,
+                          decoration: new BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: new DecorationImage(
+                              fit: BoxFit.fill,
+                              image: imgPath,
+                            ),
+                          )),
+                    ),
                   ),
                 ),
               ),
@@ -59,11 +62,24 @@ buildList(
             ),
             Text(
               name,
-              style: TextStyle(fontSize: 17, color: textColor),
+              style: TextStyle(
+                fontSize: 19,
+                color: textColor,
+                fontFamily: ArabicFonts.Baloo_Bhaijaan,
+                package: 'google_fonts_arabic',
+              ),
             ),
             Text(
-              '$numberofVol',
-              style: TextStyle(fontSize: 17, color: textColor),
+              """ :عدد مرات التطوع  
+              $numberofVol 
+            """,
+              style: TextStyle(
+                fontSize: 17,
+                color: Colors.orange,
+                fontWeight: FontWeight.w900,
+                fontFamily: ArabicFonts.Tajawal,
+                package: 'google_fonts_arabic',
+              ),
             ),
           ],
         ),

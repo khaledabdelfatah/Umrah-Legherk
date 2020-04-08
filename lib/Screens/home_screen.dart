@@ -17,6 +17,10 @@ import 'package:umruh_lgherak/Widgets/home/HomeTopWidget.dart';
 import 'package:umruh_lgherak/Widgets/home/buildHor_list.dart';
 import 'package:umruh_lgherak/Widgets/home/buildList_Item.dart';
 import 'package:umruh_lgherak/Widgets/home/homeDrawer_widger.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+import '../testWidget.dart';
+import '../testWidget2.dart';
 
 class Home_Screen extends StatefulWidget {
   static String id = 'Home_Screen';
@@ -29,6 +33,7 @@ class _Home_ScreenState extends State<Home_Screen> {
   String userEmail = '';
   String username = '';
   var testname = 'Khaled ';
+  String userPhoneNumber = '';
   FirebaseUser user;
   FirebaseAuth _auth;
   getCurrentUser() async {
@@ -36,11 +41,12 @@ class _Home_ScreenState extends State<Home_Screen> {
     user = await _auth.currentUser();
     var docRef = Firestore.instance.collection('users').document(user.uid);
     docRef.get().then((document) {
-      print(document['profile_img_link']);
+      print(document['profile_img_link'] + 'From Home Screen.dart');
       setState(() {
         userEmail = document['email'];
         username = document['name'];
         userImgLink = document['profile_img_link'];
+        userPhoneNumber = document['phone_number'];
       });
     });
   }
@@ -91,10 +97,186 @@ class _Home_ScreenState extends State<Home_Screen> {
 
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: Colors.blue, // navigation bar color
-      statusBarColor: Colors.pink, // status bar color
+      statusBarColor: Colors.orange, // status bar color
     ));
 //For TEST ONLY TODO:
     double height = MediaQuery.of(context).size.height;
+    var children2 = <Widget>[
+      HomeStack(
+          context: context,
+          userImgLink: userImgLink,
+          openDrawer: () {
+            _scaffoldKey.currentState.openEndDrawer();
+          },
+          formKey: _formKey,
+          username: username),
+      SizedBox(height: 10.0),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Icon(
+            Icons.star,
+            textDirection: TextDirection.rtl,
+            color: Colors.orangeAccent[400],
+          ),
+          Text(
+            '\"افضل المتطوعين لهذا الشهر \"',
+            // textAlign: TextAlign.justify,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+                color: Colors.deepOrange,
+                // backgroundColor: Colors.teal.withOpacity(.2),
+                fontWeight: FontWeight.w600,
+                fontFamily: ArabicFonts.Amiri,
+                package: 'google_fonts_arabic',
+                fontSize: 20.0),
+          ),
+          Icon(
+            Icons.star,
+            textDirection: TextDirection.rtl,
+            color: Colors.orangeAccent[400],
+          ),
+        ],
+      ),
+//TODO:IMPORTSNT
+      //        buildList(
+      // bgColor: Color(0xFFFFE9C6),
+      //       name: username,
+      //       imgPath:userImgLink==null?AssetImage('assets/Icon1.png'):
+      //      NetworkImage(userImgLink) ,
+      //       numberofVol: 22,
+      //       textColor: Color(0xFFDA9551),
+      //       cheight: height
+      //       ),
+
+      Container(
+          height: 200,
+          // width: MediaQuery.of(context).size.width,
+          child: FutureBuilder(
+              future: topVolounters.getData(),
+              builder: (context, snapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Text(
+                      "جار التحميل ,, برجاء الانتظار ",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapShot.data.length,
+                      itemBuilder: (context, index) {
+                        return buildList(
+                            bgColor: Color(0xFFFFE9C6),
+                            name: snapShot.data[index].data['name'],
+                            imgPath:
+                                snapShot.data[index].data['profile_img_link'] ==
+                                        null
+                                    ? AssetImage(
+                                        'assets/img/appIcon.png',
+                                      )
+                                    : NetworkImage(snapShot
+                                        .data[index].data['profile_img_link']),
+                            numberofVol: snapShot
+                                .data[index].data['number_ofVolunteering'],
+                            textColor: Color(0xFFDA9551),
+                            cheight: height);
+                      });
+                }
+              })),
+
+      // title: Text(snapShot.data[index].data['title']),
+
+      Divider(),
+      Padding(
+        padding: const EdgeInsets.only(top: 20.0, right: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text(
+              "اخر الطلبات",
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.orange,
+                fontWeight: FontWeight.w700,
+                fontFamily: ArabicFonts.El_Messiri,
+                package: 'google_fonts_arabic',
+              ),
+            ),
+          ],
+        ),
+      ),
+
+      // Recent Requests
+      Container(
+        child: FutureBuilder(
+            future: topVolounters.get2Data(),
+            builder: (context, snapShot) {
+              if (snapShot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: Text(
+                    "جار التحميل ,, برجاء الانتظار ",
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: ArabicFonts.Cairo,
+                      package: 'google_fonts_arabic',
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: snapShot.data.length,
+                    itemBuilder: (context, index) {
+                      return buildListItem(
+                          foodName: snapShot.data[index].data['title'],
+                          imgPath: snapShot.data[index].data['Pic_url'] == null
+                              ? AssetImage(
+                                  'assets/img/appIcon.png',
+                                )
+                              : NetworkImage(
+                                  snapShot.data[index].data['Pic_url']),
+                          date: snapShot.data[index].data['puplished_date'],
+                          showRequestDetails: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => ViewDetalis(
+                                          imgLink: snapShot
+                                              .data[index].data['Pic_url'],
+                                          phoneNumber: userPhoneNumber,
+                                          publisedDate: snapShot.data[index]
+                                              .data['puplished_date'],
+                                          reqDetalis: snapShot.data[index]
+                                              .data['request_details'],
+                                          title: snapShot
+                                              .data[index].data['title'],
+                                        )));
+                            // showBottomSheet(
+                            //     shape: RoundedRectangleBorder(
+                            //         borderRadius: BorderRadius.circular(30),
+                            //         side: BorderSide.none),
+                            //     context: context,
+                            //     builder: (context) {
+                            //       return MyHomePage();
+                            //     });
+                            //  Text(snapShot.data[index].data['title'] +
+                            //       ' Is Pressed');
+                          });
+                    });
+              }
+            }),
+      )
+    ];
     return Scaffold(
       bottomNavigationBar: HomeBottomBar(),
       floatingActionButton: HomeFAB(context),
@@ -103,176 +285,12 @@ class _Home_ScreenState extends State<Home_Screen> {
       body: ListView(
         children: <Widget>[
           Column(
-            children: <Widget>[
-              HomeStack(
-                  context: context,
-                  userImgLink: userImgLink,
-                  openDrawer: () {
-                    _scaffoldKey.currentState.openEndDrawer();
-                  },
-                  formKey: _formKey,
-                  username: username),
-              SizedBox(height: 10.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Icons.star,
-                    textDirection: TextDirection.rtl,
-                    color: Colors.orangeAccent[400],
-                  ),
-                  Text(
-                    '\"افضل المتطوعين لهذا الشهر \"',
-                    // textAlign: TextAlign.justify,
-                    textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                        color: Colors.deepOrange,
-                        // backgroundColor: Colors.teal.withOpacity(.2),
-                        fontWeight: FontWeight.w600,
-                        fontFamily: ArabicFonts.Amiri,
-                        package: 'google_fonts_arabic',
-                        fontSize: 20.0),
-                  ),
-                  Icon(
-                    Icons.star,
-                    textDirection: TextDirection.rtl,
-                    color: Colors.orangeAccent[400],
-                  ),
-                ],
-              ),
-//TODO:IMPORTSNT
-              //        buildList(
-              // bgColor: Color(0xFFFFE9C6),
-              //       name: username,
-              //       imgPath:userImgLink==null?AssetImage('assets/Icon1.png'):
-              //      NetworkImage(userImgLink) ,
-              //       numberofVol: 22,
-              //       textColor: Color(0xFFDA9551),
-              //       cheight: height
-              //       ),
-
-              Container(
-                  height: 200,
-                  // width: MediaQuery.of(context).size.width,
-                  child: FutureBuilder(
-                      future: topVolounters.getData(),
-                      builder: (context, snapShot) {
-                        if (snapShot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(
-                            child: Text(
-                              "جار التحميل ,, برجاء الانتظار ",
-                              style: TextStyle(
-                                color: Colors.orange,
-                                fontWeight: FontWeight.w700,
-                                fontFamily: ArabicFonts.Cairo,
-                                package: 'google_fonts_arabic',
-                              ),
-                            ),
-                          );
-                        } else {
-                          return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snapShot.data.length,
-                              itemBuilder: (context, index) {
-                                return buildList(
-                                    bgColor: Color(0xFFFFE9C6),
-                                    name: snapShot.data[index].data['name'],
-                                    imgPath: snapShot.data[index]
-                                                .data['profile_img_link'] ==
-                                            null
-                                        ? AssetImage(
-                                            'assets/img/appIcon.png',
-                                          )
-                                        : NetworkImage(snapShot.data[index]
-                                            .data['profile_img_link']),
-                                    numberofVol: snapShot.data[index]
-                                        .data['number_ofVolunteering'],
-                                    textColor: Color(0xFFDA9551),
-                                    cheight: height);
-                              });
-                        }
-                      })),
-
-              // title: Text(snapShot.data[index].data['title']),
-
-              Divider(),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      "اخر الطلبات",
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: ArabicFonts.El_Messiri,
-                        package: 'google_fonts_arabic',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Recent Requests
-              Container(
-                child: FutureBuilder(
-                    future: topVolounters.get2Data(),
-                    builder: (context, snapShot) {
-                      if (snapShot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: Text("  Im Loading"),
-                        );
-                      } else {
-                        return ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapShot.data.length,
-                            itemBuilder: (context, index) {
-                              return buildListItem(
-                                  foodName: snapShot.data[index].data['title'],
-                                  imgPath: snapShot
-                                              .data[index].data['Pic_url'] ==
-                                          null
-                                      ? AssetImage(
-                                          'assets/img/appIcon.png',
-                                        )
-                                      : NetworkImage(
-                                          snapShot.data[index].data['Pic_url']),
-                                  date: snapShot
-                                      .data[index].data['puplished_date'],
-                                  showRequestDetails: () {
-                                    showBottomSheet(
-                                        context: context,
-                                         builder: (context) {
-                                          return Center(
-                                            child: InkWell(
-                                              onTap: ()=>Navigator.pop(context),
-                                                                                          child: Text(snapShot
-                                                      .data[index].data['title'] +
-                                                  ' Is Pressed'),
-                                            ),
-                                          );
-                                        });
-                                    //  Text(snapShot.data[index].data['title'] +
-                                    //       ' Is Pressed');
-                                  });
-                            });
-                      }
-                    }),
-              )
-
-              // buildListItem(
-              //   foodName: 'Khaeald',
-              //   imgPath: AssetImage('assets/111.jpg'),
-              //   price: '22',
-              // ),
-            ],
+            children: children2,
           ),
           //
+          SizedBox(
+            height: 20,
+          ),
 
           //
         ],
@@ -289,6 +307,11 @@ class _Home_ScreenState extends State<Home_Screen> {
             Navigator.pushNamed(context, FAQ.id);
           },
           singOut: () async {
+            // var whatsappUrl = "whatsapp://send?phone=0201553407978";
+            // await canLaunch(whatsappUrl)
+            //     ? launch(whatsappUrl)
+            //     : print(
+            //         "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
             await _auth.signOut();
             Navigator.pushNamedAndRemoveUntil(
                 context, WelcomePage.id, (Route<dynamic> route) => false);

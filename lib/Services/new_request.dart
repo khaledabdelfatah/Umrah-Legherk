@@ -8,6 +8,9 @@ class Request_Service {
     FirebaseAuth _auth = FirebaseAuth.instance;
 
     var now = new DateTime.now();
+    print(
+        "/*/*/*/**///*/*/*/***************////////////***************//////////*");
+    print(now);
     var formatter = new DateFormat('yyyy-MM-dd');
     String formatted = formatter.format(now);
     print(formatted); // something like 2013-04-20

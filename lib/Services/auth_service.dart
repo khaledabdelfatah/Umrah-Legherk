@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
- import '../Screens/welcome_screen.dart';
+import '../Screens/welcome_screen.dart';
+
 class signinService {
 //   final String username;
 // final String password;
@@ -37,9 +38,9 @@ class signinService {
         'email': email,
         'phone_number': phoneNum,
         'profile_img_link': imgLink,
-        'number_ofVolunteering':0,
-        'number_ofRequests':0,
-              });
+        'number_ofVolunteering': 0,
+        'number_ofRequests': 0,
+      });
     } catch (e) {
       print(e.toString());
     }
@@ -48,21 +49,17 @@ class signinService {
   Future singin({String email, String password}) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseUser user = await _auth.currentUser();
- 
-      if (user == null) {
-        return await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-      } else {
-        _auth.signOut();
-        print(
-            "THere might BE USER HERE FIND HIM NOWW,Iwill Kick him out now!!!!!!!");
 
-        return await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-      }
-    } 
-      
+    if (user == null) {
+      return await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+    } else {
+      _auth.signOut();
+      print(
+          "THere might BE USER HERE FIND HIM NOWW,Iwill Kick him out now!!!!!!!");
 
-    
+      return await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
+    }
   }
-
+}

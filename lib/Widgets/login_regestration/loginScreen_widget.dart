@@ -111,21 +111,21 @@ Widget loginButton(
     textColor: Colors.white,
     padding: EdgeInsets.all(0.0),
     child: Container(
-        alignment: Alignment.center,
-        width: large ? width / 4 : (medium ? width / 3.75 : width / 3.5),
-        decoration: BoxDecoration(
-    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-    gradient: LinearGradient(
-      colors: <Color>[Colors.orange[200], Colors.orange],
-    ),
+      alignment: Alignment.center,
+      width: large ? width / 4 : (medium ? width / 3.75 : width / 3.5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        gradient: LinearGradient(
+          colors: <Color>[Colors.orange[200], Colors.orange],
         ),
-        padding: const EdgeInsets.all(12.0),
-        child: Text('تسجيل الدخول',
-      style: TextStyle(
-          fontFamily: ArabicFonts.Cairo,
-          package: 'google_fonts_arabic',
-          fontSize: large ? 14 : (medium ? 12 : 10))),
       ),
+      padding: const EdgeInsets.all(12.0),
+      child: Text('تسجيل الدخول',
+          style: TextStyle(
+              fontFamily: ArabicFonts.Cairo,
+              package: 'google_fonts_arabic',
+              fontSize: large ? 14 : (medium ? 12 : 10))),
+    ),
   );
 }
 

@@ -8,11 +8,13 @@ class GetTopVolounters {
     QuerySnapshot qn = await firestore.collection('users').getDocuments();
     return qn.documents;
   }
-Future get2Data() async {
+
+  Future get2Data() async {
     var firestore = Firestore.instance;
     QuerySnapshot qn = await firestore.collection('requests').getDocuments();
     return qn.documents;
   }
+
   FutureBuilder builder() {
     return FutureBuilder(
         future: getData(),
@@ -33,4 +35,3 @@ Future get2Data() async {
         });
   }
 }
-

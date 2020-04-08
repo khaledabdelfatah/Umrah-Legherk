@@ -5,7 +5,8 @@ Stack HomeStack(
     {String userImgLink,
     BuildContext context,
     Function openDrawer,
-    String username,Key formKey}) {
+    String username,
+    Key formKey}) {
   return Stack(
     children: <Widget>[
       Container(
@@ -111,12 +112,12 @@ Stack HomeStack(
               borderRadius: BorderRadius.circular(5.0),
               child: Directionality(
                 textDirection: TextDirection.rtl,
-                              child: TextFormField(
-                  key: formKey,
+                child: TextFormField(
+                    key: formKey,
                     decoration: InputDecoration(
                         border: InputBorder.none,
-                        suffixIcon:
-                            Icon(Icons.search, color: Colors.orange, size: 30.0),
+                        suffixIcon: Icon(Icons.search,
+                            color: Colors.orange, size: 30.0),
                         contentPadding: EdgeInsets.only(left: 15.0, top: 15.0),
                         hintText: '  قم بالبحث  ',
                         // alignLabelWithHint: true,
@@ -126,8 +127,8 @@ Stack HomeStack(
                           fontSize: 13,
                           fontWeight: FontWeight.w900,
                           color: Colors.grey,
-                           inherit: true,
-                           wordSpacing: 2.0,
+                          inherit: true,
+                          wordSpacing: 2.0,
                           fontFamily: ArabicFonts.Tajawal,
                           package: 'google_fonts_arabic',
                         ))),

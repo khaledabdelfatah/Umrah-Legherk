@@ -60,7 +60,9 @@ Drawer homeDrawer(
             image: DecorationImage(
                 alignment: Alignment.center,
                 //  centerSlice: Rect.fsromCircle(center: Offset(.0, 1),radius: 20),
-                image: AssetImage( 'assets/img/appIcon.png',),
+                image: AssetImage(
+                  'assets/img/appIcon.png',
+                ),
                 fit: BoxFit.cover)),
         currentAccountPicture: Container(
           height: height / 5.5,

@@ -201,8 +201,8 @@ class _Login_screenState extends State<LoginScreen>
                                   email: _loginEmailController.text.trim(),
                                   password: _loginPasswordController.text);
 
-                               await Navigator.pushReplacementNamed(context, Home_Screen.id);
-
+                              await Navigator.pushReplacementNamed(
+                                  context, Home_Screen.id);
                             } on PlatformException catch (e) {
                               setState(() {
                                 _saving = false;

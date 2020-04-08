@@ -46,7 +46,6 @@ Widget repassword({TextEditingController rePassController}) {
   return CustomTextField(
     keyboardType: TextInputType.text,
     textEditingController: rePassController,
-
     obscureText: true,
     icon: Icons.lock_outline,
     hint: "كرر كلمة السر ",
