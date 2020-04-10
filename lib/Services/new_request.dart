@@ -15,6 +15,15 @@ class Request_Service {
     String formatted = formatter.format(now);
     print(formatted); // something like 2013-04-20
     final FirebaseUser user = await _auth.currentUser();
+    ////
+    _auth = FirebaseAuth.instance;
+    String requestPuplisher;
+    var docRef =   Firestore.instance.collection('users').document(user.uid);
+   await docRef.get().then((document) {
+      requestPuplisher = document['name'];
+    });
+
+    ////
     // print(user.uid);
     print('from newResquest.dart' +
         '\n' +
@@ -25,12 +34,14 @@ class Request_Service {
         imgUrl);
     CollectionReference usercollection =
         Firestore.instance.collection('requests');
+
     return await usercollection.document(user.uid).setData({
       'title': title,
       'puplished_date': formatted,
       'person_status': status,
       'request_details': details,
       'Pic_url': imgUrl,
+      'puplisher': requestPuplisher
     });
   }
 }

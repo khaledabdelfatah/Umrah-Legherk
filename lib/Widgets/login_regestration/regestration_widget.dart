@@ -1,4 +1,5 @@
 // import 'package:firebase_database/firebase_database.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
 import 'package:umruh_lgherak/Widgets/login_regestration/textformfiled.dart';
@@ -13,6 +14,7 @@ Widget fullNameTextFormField({TextEditingController fullNameController}) {
   );
 }
 
+String ccode='+20';
 Widget emailTextFormField({TextEditingController emailController}) {
   return CustomTextField(
     textEditingController: emailController,
@@ -28,7 +30,38 @@ Widget phoneTextFormField({TextEditingController phoneController}) {
     keyboardType: TextInputType.number,
     icon: Icons.phone,
     hint: "رقم الهاتف",
+    hintIcon: CountryCodePicker(
+      textOverflow: TextOverflow.visible,
+      favorite: ['+20', 'Eg'],
+      initialSelection: 'Eg',
+      padding: EdgeInsets.only(left: 10),
+      searchStyle: TextStyle(
+        color: Colors.orange,
+        fontWeight: FontWeight.w700,
+        fontFamily: ArabicFonts.Cairo,
+        package: 'google_fonts_arabic',
+        // backgroundColor: Colors.orange
+      ),
+      textStyle: TextStyle(color: Colors.black),
+      searchDecoration: InputDecoration(
+          // labelText: "gff",
+
+          fillColor: Colors.orange,
+          hintText: 'ابحث عن كود دولتك',
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(30))),
+      onInit: (code) {
+        ccode = code.dialCode;
+      },
+ 
+       onChanged: (code) {
+        ccode = code.dialCode;
+      },
+    ),
   );
+}
+
+getcurrentCode({String test}) {
+  return ccode;
 }
 
 Widget passwordTextFormField({TextEditingController passController}) {

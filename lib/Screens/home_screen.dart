@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts_arabic/fonts.dart';
+import 'package:umruh_lgherak/Screens/DetailsScreen.dart';
 import 'package:umruh_lgherak/Screens/FAQ.dart';
 
 import 'package:umruh_lgherak/Screens/welcome_screen.dart';
@@ -18,9 +19,6 @@ import 'package:umruh_lgherak/Widgets/home/buildHor_list.dart';
 import 'package:umruh_lgherak/Widgets/home/buildList_Item.dart';
 import 'package:umruh_lgherak/Widgets/home/homeDrawer_widger.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-import '../testWidget.dart';
-import '../testWidget2.dart';
 
 class Home_Screen extends StatefulWidget {
   static String id = 'Home_Screen';
@@ -139,16 +137,7 @@ class _Home_ScreenState extends State<Home_Screen> {
           ),
         ],
       ),
-//TODO:IMPORTSNT
-      //        buildList(
-      // bgColor: Color(0xFFFFE9C6),
-      //       name: username,
-      //       imgPath:userImgLink==null?AssetImage('assets/Icon1.png'):
-      //      NetworkImage(userImgLink) ,
-      //       numberofVol: 22,
-      //       textColor: Color(0xFFDA9551),
-      //       cheight: height
-      //       ),
+ 
 
       Container(
           height: 200,
@@ -194,7 +183,7 @@ class _Home_ScreenState extends State<Home_Screen> {
 
       // title: Text(snapShot.data[index].data['title']),
 
-      Divider(),
+      Divider(color: Colors.orange,),
       Padding(
         padding: const EdgeInsets.only(top: 20.0, right: 20),
         child: Row(
@@ -260,22 +249,79 @@ class _Home_ScreenState extends State<Home_Screen> {
                                               .data['request_details'],
                                           title: snapShot
                                               .data[index].data['title'],
+                                          puplisherName: snapShot
+                                              .data[index].data['puplisher'],
+                                          status: snapShot.data[index]
+                                              .data['person_status'],
                                         )));
-                            // showBottomSheet(
-                            //     shape: RoundedRectangleBorder(
-                            //         borderRadius: BorderRadius.circular(30),
-                            //         side: BorderSide.none),
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return MyHomePage();
-                            //     });
-                            //  Text(snapShot.data[index].data['title'] +
-                            //       ' Is Pressed');
+ 
                           });
                     });
               }
             }),
-      )
+      ),
+ Divider(color: Colors.orange ),
+
+      Padding(
+        padding: const EdgeInsets.only(top: 10.0, right: 30),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            Text(
+              "اخر الطلبات",
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.orange,
+                fontWeight: FontWeight.w700,
+                fontFamily: ArabicFonts.El_Messiri,
+                package: 'google_fonts_arabic',
+              ),
+            ),
+          ],
+        ),
+      ),
+      SizedBox(height: 10,),
+       Container(
+          height: 200,
+          // width: MediaQuery.of(context).size.width,
+          child: FutureBuilder(
+              future: topVolounters.getData(),
+              builder: (context, snapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Text(
+                      "جار التحميل ,, برجاء الانتظار ",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: snapShot.data.length,
+                      itemBuilder: (context, index) {
+                        return buildList(
+                            bgColor: Color(0xFFFFE9C6),
+                            name: snapShot.data[index].data['name'],
+                            imgPath:
+                                snapShot.data[index].data['profile_img_link'] ==
+                                        null
+                                    ? AssetImage(
+                                        'assets/img/appIcon.png',
+                                      )
+                                    : NetworkImage(snapShot
+                                        .data[index].data['profile_img_link']),
+                            numberofVol: snapShot
+                                .data[index].data['number_ofVolunteering'],
+                            textColor: Color(0xFFDA9551),
+                            cheight: height);
+                      });
+                }
+              })),
     ];
     return Scaffold(
       bottomNavigationBar: HomeBottomBar(),
@@ -307,11 +353,6 @@ class _Home_ScreenState extends State<Home_Screen> {
             Navigator.pushNamed(context, FAQ.id);
           },
           singOut: () async {
-            // var whatsappUrl = "whatsapp://send?phone=0201553407978";
-            // await canLaunch(whatsappUrl)
-            //     ? launch(whatsappUrl)
-            //     : print(
-            //         "open whatsapp app link or do a snackbar with notification that there is no whatsapp installed");
             await _auth.signOut();
             Navigator.pushNamedAndRemoveUntil(
                 context, WelcomePage.id, (Route<dynamic> route) => false);

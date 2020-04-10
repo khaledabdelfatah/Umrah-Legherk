@@ -1,3 +1,4 @@
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
 // import 'package:login_signup/ui/widgets/responsive_ui.dart';
@@ -11,6 +12,7 @@ class CustomTextField extends StatefulWidget {
   final IconData icon;
   final String lableText;
   final int maline;
+  final Widget hintIcon;
   CustomTextField({
     this.hint,
     this.maline = 1,
@@ -18,6 +20,7 @@ class CustomTextField extends StatefulWidget {
     this.textEditingController,
     this.keyboardType,
     this.icon,
+    this.hintIcon,
     this.obscureText = false,
   });
 
@@ -54,9 +57,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         decoration: InputDecoration(
           suffixIcon: Icon(widget.icon, color: Colors.orange[600], size: 20),
           hintText: widget.hint,
-          // labelText: lableText,
-          // errorBorder: ,
-
+          icon: widget.hintIcon,
           errorMaxLines: 1,
           hasFloatingPlaceholder: true,
           alignLabelWithHint: true,

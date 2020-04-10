@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,6 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
   TextEditingController _phoneNum = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _rePasswordController = TextEditingController();
-
 //
 
   bool isemailValid;
@@ -65,8 +65,8 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
   Future getImage() async {
     return await ImagePicker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 300,
-      maxWidth: 300,
+      maxHeight: 250,
+      maxWidth: 250,
     ).then((img) {
       setState(() {
         _image = img;
@@ -100,7 +100,7 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
         print('FILE UPLOODED SUSSESfully+$imgUrl');
       });
     } catch (e) {
-      print('FUCK YOU');
+      print('FUCK YOU' + e.toString());
     }
   }
 
@@ -247,7 +247,8 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
                                             await _service.RegisterData(
                                               email: _emailControll.text.trim(),
                                               name: _nameControll.text,
-                                              phoneNum: _phoneNum.text,
+                                              phoneNum: getcurrentCode() +
+                                                  _phoneNum.text,
                                               imgLink: imgUrl,
                                             );
                                           });
@@ -255,7 +256,8 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
                                           await _service.RegisterData(
                                             email: _emailControll.text.trim(),
                                             name: _nameControll.text,
-                                            phoneNum: _phoneNum.text,
+                                            phoneNum: getcurrentCode() +
+                                                _phoneNum.text,
                                             imgLink: imgUrl,
                                           );
                                           await Navigator.pushReplacementNamed(
@@ -414,7 +416,9 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
             SizedBox(height: _height / 60.0),
             emailTextFormField(emailController: _emailControll),
             SizedBox(height: _height / 60.0),
-            phoneTextFormField(phoneController: _phoneNum),
+            phoneTextFormField(
+              phoneController: _phoneNum,
+            ),
             SizedBox(height: _height / 60.0),
             passwordTextFormField(passController: _passwordController),
             SizedBox(height: _height / 60.0),

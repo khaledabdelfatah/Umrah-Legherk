@@ -101,7 +101,7 @@ Widget DetelisSection({TextEditingController detailsController}) {
 
 Widget RequestNameController({TextEditingController requestNameController}) {
   return CustomTextField(
-    hint: 'الاسم',
+    hint: 'اسم الشخص الذي ترغب باجراء عمره له',
     keyboardType: TextInputType.text,
     icon: Icons.person_outline,
     textEditingController: requestNameController,
