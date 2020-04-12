@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
 
 import 'package:path/path.dart' as path;
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:umruh_lgherak/Screens/home_screen.dart';
 import 'package:umruh_lgherak/Services/new_request.dart';
 import 'package:umruh_lgherak/Widgets/home/buildHor_list.dart';
@@ -203,60 +204,83 @@ class _Request_ScreenState extends State<Request_Screen> {
                 elevation: 5.0,
                 child: MaterialButton(
                   onPressed: () async {
-                    setState(() {
-                      disable = true;
-                    });
-                    print(_detailsController.text +
-                        '\n from RequestingScreen.dart \n' +
-                        _requestNameController.text);
-                    await uploadFile();
-                    await _request_service.add_request(
-                      details: _detailsController.text,
-                      status: dropDownValue,
-                      title: _requestNameController.text,
-                      imgUrl: imgUrl,
-                    );
-                    setState(() {
-                      disable = false;
-                    });
-                    showDialog(
-                        context: context,
-                        barrierDismissible: true,
-                        builder: (context) {
-                          return AlertDialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16)),
-                            title: Text(
-                              "تم اضافة طلبك بنجاح",
-                              textAlign: TextAlign.center,
-                            ),
-                            // contentPadding: EdgeInsets.all(20),
-                            // titlePadding:  EdgeInsets.all(20),
-                            backgroundColor: Colors.white10,
-                            titleTextStyle: TextStyle(
-                              color: Colors.green,
-                              fontSize: 25,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: ArabicFonts.Changa,
-                              package: 'google_fonts_arabic',
-                            ),
-                            content: AnimatedOpacity(
-                              duration: Duration(seconds: 5),
-                              opacity: 0.5,
-                              curve: Curves.easeInCirc,
-                              child: Image.asset(
-                                'assets/img/5de.gif',
-                                fit: BoxFit.contain,
-                                filterQuality: FilterQuality.high,
-                              ),
-                            ),
-                          );
-                        });
+                    // setState(() {
+                    //   disable = true;
+                    // });
+                    // print(_detailsController.text +
+                    //     '\n from RequestingScreen.dart \n' +
+                    //     _requestNameController.text);
+                    // await uploadFile();
+                    // await _request_service.add_request(
+                    //   details: _detailsController.text,
+                    //   status: dropDownValue,
+                    //   title: _requestNameController.text,
+                    //   imgUrl: imgUrl,
+                    // );
+                    // setState(() {
+                    //   disable = false;
+                    // });
 
-                    // sleep(waitforalert);
+                    return Alert(
+                      context: context,
+                      title: "تم اضافة طلبك بنجاح",
+                      desc: "شكرا لك علي استخدامك البرنامج,تم اضافة طلبك بنجاح",
+                      buttons: [DialogButton(child: Text("انتقل للصفحه الرئيسيه"),
+                       onPressed: ()
+                       {Navigator.pop(context); 
+                         Navigator.pushReplacementNamed(context, Home_Screen.id);})],
+                      style: AlertStyle(
+                        titleStyle: TextStyle(
+                            color: Colors.green,
+                    fontFamily: ArabicFonts.Tajawal,
+                    package: 'google_fonts_arabic',
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w800
+                        ),
+                        animationType: AnimationType.shrink,
+                        descStyle: TextStyle(
+                                 color: Colors.orange[900],
+                    fontFamily: ArabicFonts.Cairo,
+                    package: 'google_fonts_arabic',
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w600
+                        ) 
+                      ),
+                      image: Image.asset("assets/img/ok.png", ),
+                    ).show();
+                    //     return AlertDialog(
 
-                    // Navigator.pushReplacementNamed(context, Home_Screen.id);
+                    //  title: Text(
+                    //     "تم اضافة طلبك بنجاح",
+                    //      textAlign: TextAlign.center,
+                    //     ),
+                    //     contentPadding: EdgeInsets.all(20),
+                    //     titlePadding:  EdgeInsets.all(20),
+                    //     backgroundColor: Colors.white10,
+                    //       titleTextStyle: TextStyle(
+                    //            color: Colors.green,
+                    //        fontSize: 25,
+                    //          fontWeight: FontWeight.w700,
+                    //          fontFamily: ArabicFonts.Changa,
+                    //        package: 'google_fonts_arabic',
+                    //      ),
+                    //     content: AnimatedOpacity(
+                    //        duration: Duration(seconds: 5),
+                    //           opacity: 0.5,
+                    //           curve: Curves.easeInCirc,
+                    //           child: Image.asset(
+                    //              'assets/img/5de.gif',
+                    //             fit: BoxFit.contain,
+                    //               filterQuality: FilterQuality.high,
+                    //             ),
+                    //           ),
+                    //          );
                   },
+
+                  // sleep(waitforalert);
+
+                  // Navigator.pushReplacementNamed(context, Home_Screen.id);
+
                   minWidth: 200.0,
                   height: 42.0,
                   child: Text(

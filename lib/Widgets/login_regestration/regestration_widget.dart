@@ -14,7 +14,7 @@ Widget fullNameTextFormField({TextEditingController fullNameController}) {
   );
 }
 
-String ccode='+20';
+String ccode = '+20';
 Widget emailTextFormField({TextEditingController emailController}) {
   return CustomTextField(
     textEditingController: emailController,
@@ -52,8 +52,7 @@ Widget phoneTextFormField({TextEditingController phoneController}) {
       onInit: (code) {
         ccode = code.dialCode;
       },
- 
-       onChanged: (code) {
+      onChanged: (code) {
         ccode = code.dialCode;
       },
     ),

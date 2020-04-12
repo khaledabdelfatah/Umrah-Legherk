@@ -10,7 +10,8 @@ class Request_Service {
     var now = new DateTime.now();
     print(
         "/*/*/*/**///*/*/*/***************////////////***************//////////*");
-    print(now);
+    var millisecond = now.millisecond.toString();
+    print(now.millisecond);
     var formatter = new DateFormat('yyyy-MM-dd');
     String formatted = formatter.format(now);
     print(formatted); // something like 2013-04-20
@@ -18,8 +19,8 @@ class Request_Service {
     ////
     _auth = FirebaseAuth.instance;
     String requestPuplisher;
-    var docRef =   Firestore.instance.collection('users').document(user.uid);
-   await docRef.get().then((document) {
+    var docRef = Firestore.instance.collection('users').document(user.uid);
+    await docRef.get().then((document) {
       requestPuplisher = document['name'];
     });
 
@@ -35,11 +36,15 @@ class Request_Service {
     CollectionReference usercollection =
         Firestore.instance.collection('requests');
 
-    return await usercollection.document(user.uid).setData({
+    return await usercollection
+        .document(user.uid + millisecond + formatted)
+        .setData({
       'title': title,
       'puplished_date': formatted,
       'person_status': status,
       'request_details': details,
+      'isCompleted': false,
+      'volunteerPerson_name': '',
       'Pic_url': imgUrl,
       'puplisher': requestPuplisher
     });

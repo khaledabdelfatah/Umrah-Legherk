@@ -17,8 +17,12 @@ import 'package:umruh_lgherak/Widgets/home/FABandBOTTOMBAR.dart';
 import 'package:umruh_lgherak/Widgets/home/HomeTopWidget.dart';
 import 'package:umruh_lgherak/Widgets/home/buildHor_list.dart';
 import 'package:umruh_lgherak/Widgets/home/buildList_Item.dart';
+import 'package:umruh_lgherak/Widgets/home/completed_Request.dart';
 import 'package:umruh_lgherak/Widgets/home/homeDrawer_widger.dart';
+import 'package:umruh_lgherak/Widgets/home/loading-Widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../testWidget.dart';
 
 class Home_Screen extends StatefulWidget {
   static String id = 'Home_Screen';
@@ -87,7 +91,7 @@ class _Home_ScreenState extends State<Home_Screen> {
     });
   }
 
-  static GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+ GlobalKey<FormState>     _formKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     GetTopVolounters topVolounters = GetTopVolounters();
@@ -137,7 +141,6 @@ class _Home_ScreenState extends State<Home_Screen> {
           ),
         ],
       ),
- 
 
       Container(
           height: 200,
@@ -147,17 +150,9 @@ class _Home_ScreenState extends State<Home_Screen> {
               builder: (context, snapShot) {
                 if (snapShot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: Text(
-                      "جار التحميل ,, برجاء الانتظار ",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: ArabicFonts.Cairo,
-                        package: 'google_fonts_arabic',
-                      ),
-                    ),
+                    child: loadingWidget(),
                   );
-                } else {
+                } else if (snapShot.hasData) {
                   return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: snapShot.data.length,
@@ -178,12 +173,26 @@ class _Home_ScreenState extends State<Home_Screen> {
                             textColor: Color(0xFFDA9551),
                             cheight: height);
                       });
+                } else {
+                  return Center(
+                    child: Text(
+                      "لم يقم احد بالتطوع لهذا الشهر",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                  );
                 }
               })),
 
       // title: Text(snapShot.data[index].data['title']),
 
-      Divider(color: Colors.orange,),
+      Divider(
+        color: Colors.orange,
+      ),
       Padding(
         padding: const EdgeInsets.only(top: 20.0, right: 20),
         child: Row(
@@ -206,21 +215,13 @@ class _Home_ScreenState extends State<Home_Screen> {
       // Recent Requests
       Container(
         child: FutureBuilder(
-            future: topVolounters.get2Data(),
+            future: topVolounters.getUncomplettedRequest(),
             builder: (context, snapShot) {
               if (snapShot.connectionState == ConnectionState.waiting) {
                 return Center(
-                  child: Text(
-                    "جار التحميل ,, برجاء الانتظار ",
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: ArabicFonts.Cairo,
-                      package: 'google_fonts_arabic',
-                    ),
-                  ),
+                  child: loadingWidget(),
                 );
-              } else {
+              } else if (snapShot.hasData) {
                 return ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
@@ -253,14 +254,30 @@ class _Home_ScreenState extends State<Home_Screen> {
                                               .data[index].data['puplisher'],
                                           status: snapShot.data[index]
                                               .data['person_status'],
+                                          requestPublisher:
+                                              snapShot.data[index].documentID,
                                         )));
- 
                           });
                     });
+              } else if (snapShot == null) {
+                return Container(
+                  height: 300,
+                  child: Center(
+                    child: Text(
+                      "لا يوجد طلبات بالتطوع",
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                  ),
+                );
               }
             }),
       ),
- Divider(color: Colors.orange ),
+      Divider(color: Colors.orange),
 
       Padding(
         padding: const EdgeInsets.only(top: 10.0, right: 30),
@@ -268,7 +285,7 @@ class _Home_ScreenState extends State<Home_Screen> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Text(
-              "اخر الطلبات",
+              "اخر الطلبات التي تم التطوع لها",
               style: TextStyle(
                 fontSize: 20.0,
                 color: Colors.orange,
@@ -280,48 +297,61 @@ class _Home_ScreenState extends State<Home_Screen> {
           ],
         ),
       ),
-      SizedBox(height: 10,),
-       Container(
+      SizedBox(
+        height: 10,
+      ),
+      //////////////////////
+      Container(
           height: 200,
-          // width: MediaQuery.of(context).size.width,
+          width: MediaQuery.of(context).size.width,
           child: FutureBuilder(
-              future: topVolounters.getData(),
+              future: topVolounters.getCompletedRequest(),
               builder: (context, snapShot) {
                 if (snapShot.connectionState == ConnectionState.waiting) {
                   return Center(
-                    child: Text(
-                      "جار التحميل ,, برجاء الانتظار ",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: ArabicFonts.Cairo,
-                        package: 'google_fonts_arabic',
-                      ),
+                    child: loadingWidget(),
+                  );
+                } else if (snapShot.hasData) {
+                  return ListView.custom(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.only(
+                      right: 10,
                     ),
+
+                    childrenDelegate:
+                        SliverChildBuilderDelegate((context, index) {
+                      return completedRequestCard(
+                          context: context,
+                          imgPath:
+                              snapShot.data[index].data['Pic_url'] == null
+                                  ? AssetImage('assets/img/appIcon.png')
+                                  : NetworkImage(
+                                      snapShot.data[index].data['Pic_url']),
+                          personName: snapShot.data[index].data['title'],
+                          volName: snapShot
+                              .data[index].data['volunteerPerson_name']);
+                    }, childCount: snapShot.data.length),
+
+                    // *  completedRequestCard(
+                    //       context: context,
+                    //       imgPath: AssetImage('assets/img/appIcon.png'),
+                    //       personName: "Khaelex",
+                    //       volName: "Abo Nesma"),
                   );
                 } else {
-                  return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapShot.data.length,
-                      itemBuilder: (context, index) {
-                        return buildList(
-                            bgColor: Color(0xFFFFE9C6),
-                            name: snapShot.data[index].data['name'],
-                            imgPath:
-                                snapShot.data[index].data['profile_img_link'] ==
-                                        null
-                                    ? AssetImage(
-                                        'assets/img/appIcon.png',
-                                      )
-                                    : NetworkImage(snapShot
-                                        .data[index].data['profile_img_link']),
-                            numberofVol: snapShot
-                                .data[index].data['number_ofVolunteering'],
-                            textColor: Color(0xFFDA9551),
-                            cheight: height);
-                      });
+                  return Text(
+                    "لا يوجد طلبات تم التطوع لها",
+                    style: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: ArabicFonts.Cairo,
+                      package: 'google_fonts_arabic',
+                    ),
+                  );
                 }
               })),
+
+      ///
     ];
     return Scaffold(
       bottomNavigationBar: HomeBottomBar(),

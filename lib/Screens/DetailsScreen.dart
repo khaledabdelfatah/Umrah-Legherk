@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:umruh_lgherak/Screens/home_screen.dart';
+import 'package:umruh_lgherak/Services/volunteeringService.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewDetalis extends StatefulWidget {
@@ -12,12 +16,14 @@ class ViewDetalis extends StatefulWidget {
   final String title;
   final String reqDetalis;
   final String phoneNumber;
+  final requestPublisher;
   final String status;
   final String puplisherName;
   ViewDetalis(
       {this.imgLink,
       this.publisedDate,
       this.title,
+      this.requestPublisher,
       this.status,
       this.puplisherName,
       this.reqDetalis,
@@ -31,6 +37,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
   void initState() {
     super.initState();
     getCurrentUser();
+    print('userid in the requst is' + widget.status);
   }
 
   FirebaseUser user;
@@ -99,31 +106,36 @@ class _ViewDetalisState extends State<ViewDetalis> {
                   Center(
                     child: Row(
                       children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(right:4.0),
+                          child: Text(
+                            'عمره لـ :- ',
+                          
+                            style: TextStyle(
+                            
+                                fontFamily: ArabicFonts.Cairo,
+                                package: 'google_fonts_arabic',
+                                fontSize: 25.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.only(right: 5)),
                         Text(
-                      'عمره لـ :- ',
-                      style: TextStyle(
-                          fontFamily: ArabicFonts.Cairo,
-                          package: 'google_fonts_arabic',
-                          fontSize: 25.0,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Padding(padding: EdgeInsets.only(right:5)),
-                               Text(
-                       widget.title,
-                      style: TextStyle(
-                          fontFamily: ArabicFonts.Cairo,
-                          package: 'google_fonts_arabic',
-                          fontSize: 25.0,
-                          color: Colors.orange,
-                          fontWeight: FontWeight.bold),
-                    ),
+                          widget.title,
+                          style: TextStyle(
+                              fontFamily: ArabicFonts.Cairo,
+                              package: 'google_fonts_arabic',
+                              fontSize: 25.0,
+                              color: Colors.orange,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                   ),
                   SizedBox(height: 10.0),
                   Padding(
-                    padding: const EdgeInsets.only(left: 15.0),
+                    padding: const EdgeInsets.only(right: 5),
                     child: Text(
                       'التفاصيل:',
                       style: TextStyle(
@@ -135,25 +147,20 @@ class _ViewDetalisState extends State<ViewDetalis> {
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.only(left: 15.0, right: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            width: (MediaQuery.of(context).size.width / 4 +
-                                    MediaQuery.of(context).size.width / 2) -
-                                10.0,
-                            child: Text(
-                              widget.reqDetalis,
-                              style: TextStyle(
-                                fontFamily: ArabicFonts.Cairo,
-                                package: 'google_fonts_arabic',
-                                fontSize: 24.0,
-                                color: Colors.orange,
-                              ),
-                            ),
+                      padding: EdgeInsets.only( right:0.0),
+                      child: Container(
+                        width:MediaQuery.of(context).size.width ,
+                        child: Text(
+                         widget.reqDetalis,
+                          style: TextStyle(
+                            fontFamily: ArabicFonts.Changa,
+                            package: 'google_fonts_arabic',
+                            fontSize: 18.0,
+                            letterSpacing: 0.0,
+                            fontFeatures: [FontFeature.slashedZero()  ],
+                            color: Colors.orange,
                           ),
-                        ],
+                        ),
                       )),
                   SizedBox(height: 20.0),
                   // Padding(
@@ -167,8 +174,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
                   //         fontWeight: FontWeight.bold),
                   //   ),
                   // ),
- 
-       
+
                   Row(
                     children: <Widget>[
                       Padding(
@@ -176,44 +182,44 @@ class _ViewDetalisState extends State<ViewDetalis> {
                         child: Text(
                           'الحاله :-',
                           style: TextStyle(
-                               fontFamily: ArabicFonts.Cairo,
+                              fontFamily: ArabicFonts.Cairo,
                               package: 'google_fonts_arabic',
                               fontSize: 25.0,
                               fontWeight: FontWeight.bold),
                         ),
                       ),
-               Text(
-                          widget.status,
-                          style: TextStyle(
-                               fontFamily: ArabicFonts.Cairo,
-                              package: 'google_fonts_arabic',
-                              fontSize: 25.0,
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold),
-                        ),
+                      Text(
+                        widget.status,
+                        style: TextStyle(
+                            fontFamily: ArabicFonts.Cairo,
+                            package: 'google_fonts_arabic',
+                            fontSize: 25.0,
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                   SizedBox(height: 20.0),
                   Row(
                     children: <Widget>[
-                         Text(
+                      Text(
                         "ناشر الطلب :-",
-                          style: TextStyle(
-                               fontFamily: ArabicFonts.Cairo,
-                              package: 'google_fonts_arabic',
-                              fontSize: 25.0,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold),
-                        ),
-                         Text(
-                       widget.puplisherName,
-                          style: TextStyle(
-                               fontFamily: ArabicFonts.Cairo,
-                              package: 'google_fonts_arabic',
-                              fontSize: 22.0,
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold),
-                        ),
+                        style: TextStyle(
+                            fontFamily: ArabicFonts.Cairo,
+                            package: 'google_fonts_arabic',
+                            fontSize: 25.0,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.puplisherName,
+                        style: TextStyle(
+                            fontFamily: ArabicFonts.Cairo,
+                            package: 'google_fonts_arabic',
+                            fontSize: 22.0,
+                            color: Colors.orange,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
                 ],
@@ -349,6 +355,118 @@ class _ViewDetalisState extends State<ViewDetalis> {
                           child: InkWell(
                             onTap: () {
                               // What Will Happen Here Will Remaine Here
+/**
+ * First We make a new collection cALllaed compleated-Request
+ * 
+ */
+                              Alert(
+                                context: context,
+                                type: AlertType.warning,
+                                 
+                                title: "هل انت متاكد؟",
+                                desc:
+                                    " هل انت متاكد من انك تريد التطوع لهذا الطلب ,, لا يمكنك التراجع في قرارك!",
+                                style: AlertStyle(
+                                  descStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      package: 'google_fonts_arabic',
+                                      fontFamily: ArabicFonts.Tajawal),
+                                  titleStyle: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red,
+                                      package: 'google_fonts_arabic',
+                                      fontFamily: ArabicFonts.Cairo),
+                                ),
+                                buttons: [
+                                  DialogButton(
+                                    child: Text(
+                                      "لا لست متاكد",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontFamily: ArabicFonts.Tajawal,
+                                        fontWeight: FontWeight.w600,
+                                        package: 'google_fonts_arabic',
+                                      ),
+                                    ),
+                                    onPressed: () => Navigator.pop(context),
+                                    color: Color.fromRGBO(0, 179, 134, 1.0),
+                                  ),
+                                  DialogButton(
+                                    child: Text(
+                                      "نعم ,انا متاكد",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 17,
+                                        fontFamily: ArabicFonts.Tajawal,
+                                        fontWeight: FontWeight.w700,
+                                        package: 'google_fonts_arabic',
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      SubmitVolantiring().updateInfo(
+                                          volunteerPerson: 'Ahmed',
+                                          id: widget.requestPublisher);
+                                      Navigator.pop(context);
+                                      Alert(
+                                        context: context,
+                                        buttons: [
+                                          DialogButton(
+                                              child: Text(
+                                                "الانتقال للصفحه الرئيسيه",
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 17,
+                                                  fontFamily:
+                                                      ArabicFonts.Tajawal,
+                                                  fontWeight: FontWeight.w700,
+                                                  package:
+                                                      'google_fonts_arabic',
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pushReplacementNamed(
+                                                    context, Home_Screen.id);
+                                              })
+                                        ],
+                                        title: "شكرا لك",
+                                        desc:
+                                            " شكرا لتطوعك, تاكد من تواصلك مع صاحب الطلب من خلال اي وسيله موجوده في البرنامج",
+                                        image:
+                                            Image.asset("assets/img/5de.gif"),
+                                        closeFunction: () =>
+                                            Navigator.pushReplacementNamed(
+                                                context, Home_Screen.id),
+                                                style: AlertStyle(
+                                                  titleStyle: TextStyle(
+                                                    color: Colors.green,
+                                                  fontSize: 37,
+                                                  fontFamily:
+                                                      ArabicFonts.Aref_Ruqaa,
+                                                  fontWeight: FontWeight.w700,
+                                                  package:
+                                                      'google_fonts_arabic',
+                                                  ),
+                                                   descStyle: TextStyle(
+                                                    color: Colors.green,
+                                                  fontSize: 15,
+                                                  fontFamily:
+                                                      ArabicFonts.Cairo,
+                                                  fontWeight: FontWeight.w700,
+                                                  package:
+                                                      'google_fonts_arabic',
+                                                  ),
+                                                )
+                                      ).show();
+                                    },
+                                    gradient: LinearGradient(colors: [
+                                      Color.fromRGBO(116, 116, 191, 1.0),
+                                      Color.fromRGBO(52, 138, 199, 1.0)
+                                    ]),
+                                  )
+                                ],
+                              ).show();
                             },
                             child: Center(
                                 child: Text(

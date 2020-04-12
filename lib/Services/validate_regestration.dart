@@ -41,19 +41,16 @@ String validtePhoneNumber({String phoneNumber}) {
   }
   return ('لايمكن ان يحتوي رقم الهاتف علي حروف ');
 }
-Future<bool> isValidPhoneNumber (
 
-    {@required String phoneNumber,
-    @required String isoCode}
-
-)async {
- 
+Future<bool> isValidPhoneNumber(
+    {@required String phoneNumber, @required String isoCode}) async {
   var _channel;
-    return await _channel.invokeMethod('isValidPhoneNumber', {
+  return await _channel.invokeMethod('isValidPhoneNumber', {
     'phone_number': phoneNumber,
     'iso_code': isoCode,
   });
 }
+
 String validatePassword({String password}) {
   if (password.isEmpty) {
     return "تاكد من كتابة الرقم السري";

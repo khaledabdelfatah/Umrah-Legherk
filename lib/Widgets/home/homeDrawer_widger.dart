@@ -21,27 +21,31 @@ Drawer homeDrawer(
               onTap: singOut,
               child: Icon(
                 Icons.exit_to_app,
-                color: Colors.orange,
+                color: Colors.red,
+                size: 30,
               ))
           //
         ],
-        accountName: Text(
-          username,
-          textDirection: TextDirection.rtl,
-          style: TextStyle(
-            color: Colors.orange[900],
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            fontFamily: ArabicFonts.Cairo,
-            package: 'google_fonts_arabic',
+        accountName: Padding(
+          padding: const EdgeInsets.only(top:25.0),
+          child: Text(
+            username,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+              color: Colors.white ,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+              fontFamily: ArabicFonts.Cairo,
+              package: 'google_fonts_arabic',
+            ),
           ),
         ),
         accountEmail: Text(
           "$userEmail",
           style: TextStyle(
-            color: Colors.orange[900],
+            color: Colors.white,
             fontSize: 20,
-            fontWeight: FontWeight.w900,
+            fontWeight: FontWeight.w400,
             fontFamily: ArabicFonts.Cairo,
             package: 'google_fonts_arabic',
           ),
@@ -61,7 +65,7 @@ Drawer homeDrawer(
                 alignment: Alignment.center,
                 //  centerSlice: Rect.fsromCircle(center: Offset(.0, 1),radius: 20),
                 image: AssetImage(
-                  'assets/img/appIcon.png',
+                  'assets/img/kaaba2.jpg',
                 ),
                 fit: BoxFit.cover)),
         currentAccountPicture: Container(

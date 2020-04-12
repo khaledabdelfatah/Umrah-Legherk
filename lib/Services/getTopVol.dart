@@ -5,13 +5,25 @@ class GetTopVolounters {
   String x;
   Future getData() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection('users').getDocuments();
+    var qn = await firestore.collection('users').getDocuments();
     return qn.documents;
   }
 
-  Future get2Data() async {
+  Future getUncomplettedRequest() async {
     var firestore = Firestore.instance;
-    QuerySnapshot qn = await firestore.collection('requests').getDocuments();
+    QuerySnapshot qn = await firestore
+        .collection('requests')
+        .where('isCompleted', isEqualTo: false)
+        .getDocuments();
+    return qn.documents;
+  }
+
+  Future getCompletedRequest() async {
+    var firestore = Firestore.instance;
+    QuerySnapshot qn = await firestore
+        .collection('requests')
+        .where('isCompleted', isEqualTo: true)
+        .getDocuments();
     return qn.documents;
   }
 
