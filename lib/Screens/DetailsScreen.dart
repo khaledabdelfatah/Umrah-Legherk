@@ -39,7 +39,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
     getCurrentUser();
     print('userid in the requst is' + widget.status);
   }
-
+String currentUserName='';
   FirebaseUser user;
   FirebaseAuth _auth;
   getCurrentUser() async {
@@ -47,8 +47,9 @@ class _ViewDetalisState extends State<ViewDetalis> {
     user = await _auth.currentUser();
     var docRef = Firestore.instance.collection('users').document(user.uid);
     docRef.get().then((document) {
-      print(document['profile_img_link'] + 'From Home Screen.dart');
-      setState(() {});
+       setState(() {
+currentUserName=document['name'];
+      });
     });
   }
 
@@ -406,7 +407,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
                                     ),
                                     onPressed: () {
                                       SubmitVolantiring().updateInfo(
-                                          volunteerPerson: 'Ahmed',
+                                          volunteerPerson: currentUserName,
                                           id: widget.requestPublisher);
                                       Navigator.pop(context);
                                       Alert(

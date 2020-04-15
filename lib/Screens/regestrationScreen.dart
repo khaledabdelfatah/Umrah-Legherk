@@ -365,11 +365,14 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
                 shape: BoxShape.circle,
               ),
               child: _image == null
-                  ? Icon(
-                      Icons.add_a_photo,
-                      size: _large ? 40 : (_medium ? 33 : 31),
-                      color: Colors.orange[200],
-                    )
+                  ? Hero(
+                    tag: "mylogotag",
+                                      child: Icon(
+                        Icons.add_a_photo,
+                        size: _large ? 40 : (_medium ? 33 : 31),
+                        color: Colors.orange[200],
+                      ),
+                  )
                   : new Container(
                       width: 120.0,
                       height: 190.0,

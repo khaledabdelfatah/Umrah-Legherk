@@ -204,22 +204,20 @@ class _Request_ScreenState extends State<Request_Screen> {
                 elevation: 5.0,
                 child: MaterialButton(
                   onPressed: () async {
-                    // setState(() {
-                    //   disable = true;
-                    // });
-                    // print(_detailsController.text +
-                    //     '\n from RequestingScreen.dart \n' +
-                    //     _requestNameController.text);
-                    // await uploadFile();
-                    // await _request_service.add_request(
-                    //   details: _detailsController.text,
-                    //   status: dropDownValue,
-                    //   title: _requestNameController.text,
-                    //   imgUrl: imgUrl,
-                    // );
-                    // setState(() {
-                    //   disable = false;
-                    // });
+                    setState(() {
+                      disable = true;
+                    });
+                    print(_detailsController.text +
+                        '\n from RequestingScreen.dart \n' +
+                        _requestNameController.text);
+                    await uploadFile();
+                    await _request_service.add_request(
+                      details: _detailsController.text,
+                      status: dropDownValue,
+                      title: _requestNameController.text,
+                      imgUrl: imgUrl,
+                    );
+            
 
                     return Alert(
                       context: context,
@@ -248,38 +246,10 @@ class _Request_ScreenState extends State<Request_Screen> {
                       ),
                       image: Image.asset("assets/img/ok.png", ),
                     ).show();
-                    //     return AlertDialog(
-
-                    //  title: Text(
-                    //     "تم اضافة طلبك بنجاح",
-                    //      textAlign: TextAlign.center,
-                    //     ),
-                    //     contentPadding: EdgeInsets.all(20),
-                    //     titlePadding:  EdgeInsets.all(20),
-                    //     backgroundColor: Colors.white10,
-                    //       titleTextStyle: TextStyle(
-                    //            color: Colors.green,
-                    //        fontSize: 25,
-                    //          fontWeight: FontWeight.w700,
-                    //          fontFamily: ArabicFonts.Changa,
-                    //        package: 'google_fonts_arabic',
-                    //      ),
-                    //     content: AnimatedOpacity(
-                    //        duration: Duration(seconds: 5),
-                    //           opacity: 0.5,
-                    //           curve: Curves.easeInCirc,
-                    //           child: Image.asset(
-                    //              'assets/img/5de.gif',
-                    //             fit: BoxFit.contain,
-                    //               filterQuality: FilterQuality.high,
-                    //             ),
-                    //           ),
-                    //          );
+                
                   },
 
-                  // sleep(waitforalert);
-
-                  // Navigator.pushReplacementNamed(context, Home_Screen.id);
+                   
 
                   minWidth: 200.0,
                   height: 42.0,
@@ -298,7 +268,7 @@ class _Request_ScreenState extends State<Request_Screen> {
                 child: Card(
                   color: Colors.grey[700],
                   child: Text(
-                    'غير مسموح الا بطلب واحد كل مره وفي حالة انشاء طلب جديد سيتم مسح القديم تلقائيا',
+                    'تاكد من ان جميع ال',
                     style: TextStyle(
                       fontSize: 18,
                       color: Colors.orange,

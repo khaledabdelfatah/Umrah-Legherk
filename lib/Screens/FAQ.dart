@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts_arabic/fonts.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+
 
 class FAQ extends StatefulWidget {
   static String id = 'FAQ';
@@ -23,7 +26,7 @@ class _FAQState extends State<FAQ> {
       child: Scaffold(
           backgroundColor: Colors.orange[100],
           appBar: AppBar(
-            backgroundColor: Colors.black,
+            backgroundColor: Colors.orange,
             elevation: 10.0,
             bottomOpacity: 10.0,
             toolbarOpacity: 1,
@@ -44,7 +47,7 @@ class _FAQState extends State<FAQ> {
                 child: Card(
                   color: Colors.red,
                   child: Text(
-                    'لمعرفة تفاصيل اكثر يرجي الضغط علي الرابط الموجود في المصدر-الكلمه باللون البرتقالي-',
+                    'لمعرفة تفاصيل اكثر يرجي الضغط علي الرابط الموجود في المصدر-الكلمه باللون الاحمر-',
                     style: TextStyle(
                       fontSize: 18,
                       // backgroundColor: Colors.lightGreen,
@@ -70,6 +73,7 @@ class _FAQState extends State<FAQ> {
               Column(
                 children: <Widget>[
                   faqCard(
+                      context: context,
                       answer: """
  الحج عن الميت والعمرة عن الميت من أفضل القربات، وينتفع بها الميت المسلم كثيرًا، فقد سئل النبي ﷺ عن ذلك مرات كثيرة فقال للسائل: حج عن أبيك، وللسائلة: حجي عن أبيك، والآخر: عن أمك، وسأله آخر قال: إني لبيت عن شبرمة قال: من شبرمة؟ قال: أخ لي أو قريب لي. قال: حج عن نفسك ثم حج عن شبرمة.
 فالناس أقسام منهم من قد حج الفريضة وأدى العمرة الفريضة هذا إذا حج عنه يكون نافلة، وإذا اعتمر عنه يكون نافلة، حج عنه أخوه أو أبوه أو قريب له أو أخ من إخوانه في الله كل ذلك طيب وهكذا العمرة، وإذا كان ما أدى الحج ولا أدى العمرة فإن الذي يحج عنه يكون قد أدى عنه الفريضة، وهكذا العمرة يكون قد أدى عنه عمرة الفريضة، وهو على كل حال مأجور والميت مأجور كلاهما مأجور، هذا عن عمله الطيب وإحسانه إلى أخيه مأجور والميت مأجور بذلك، وهكذا الصدقة وهكذا الدعاء إذا تصدق عن أخيه يؤجر هو والميت جميعًا، وهكذا إذا دعا لأخيه الميت يؤجر هو وينتفع الميت بالدعاء. نعم.
@@ -80,6 +84,7 @@ class _FAQState extends State<FAQ> {
                       src: 'الموقع الرسمي لسماحة الامام ابن باز'),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                      context: context,
                       questionTitle: 'حكم العمرة عن غير الأقرباء',
                       answer: """ 
    الحمد لله والصلاة والسلام على رسول الله وعلى آله وصحبه، أما بعـد:
@@ -89,6 +94,7 @@ class _FAQState extends State<FAQ> {
                       src: 'اسلام ويب'),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                      context: context,
                       questionTitle: 'تكرار الحج عن الغير',
                       answer: """ 
  لا مانع شرعًا من تكرار الحج عن الغير. ومما ذكر يعلم الجواب.
@@ -99,6 +105,7 @@ class _FAQState extends State<FAQ> {
                       src: 'دار الافتاء المصريه'),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                      context: context,
                       questionTitle: 'حكم هبة ثواب الأعمال للأقرباء وغيرهم',
                       answer: """
 فقد رجحنا في فتاوى كثيرة أن من عمل عملاً ووهب ثوابه للميت وصله ذلك الثواب، أياً ما كان هذا العمل. 
@@ -109,12 +116,14 @@ class _FAQState extends State<FAQ> {
                       src: 'اسلام ويب'),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                      context: context,
                       questionTitle: 'هل يجوز أداء عمرة واحدة لأكثر من متوفى؟',
                       answer: 'راجع الفيديو الموجود في المصدر.',
                       siteUrl: 'https://www.youtube.com/watch?v=CCsAAv-HOQ8',
                       src: 'دار الافتاء المصريه'),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                    context: context,
                     siteUrl: 'https://www.youtube.com/watch?v=61hubV2jMbw',
                     questionTitle:
                         ' حكم العمرة عن شخص ميت؟!! الشيخ ابن عثيمين ',
@@ -123,6 +132,7 @@ class _FAQState extends State<FAQ> {
                   ),
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
+                      context: context,
                       questionTitle:
                           '	حكم إشراك أكثر من واحد في العمرة، والتشريك في ثوابها ',
                       answer: """
@@ -148,10 +158,14 @@ class _FAQState extends State<FAQ> {
 //////////////////////////
 ///
 Card faqCard(
-    {String questionTitle, String answer, String siteUrl, String src}) {
+    {String questionTitle,
+    String answer,
+    String siteUrl,
+    String src,
+    BuildContext context}) {
   return Card(
     margin: EdgeInsets.all(3),
-    color: Colors.blueGrey,
+    color: Colors.orange,
     child: ExpansionTile(
       onExpansionChanged: (isExpended) {
         if (isExpended) {
@@ -183,7 +197,13 @@ Card faqCard(
             if (await canLaunch(siteUrl)) {
               await launch(siteUrl);
             } else {
-              throw 'Could not launch $siteUrl';
+              Alert(
+                      context: context,
+                      type: AlertType.error,
+                      title: "حدث خطا اثناء محاولة فتح الرابط",
+                      desc:
+                          "حدث خطا اثناء محاولة فتح الرابط , يرجي اخبارنا بالمشكله ")
+                  .show();
             }
           },
           child: Row(
@@ -192,8 +212,8 @@ Card faqCard(
                 "المصدر :- $src",
                 textAlign: TextAlign.right,
                 style: TextStyle(
-                  color: Colors.orange,
-                  fontWeight: FontWeight.w800,
+                  color: Colors.redAccent[400],
+                  fontWeight: FontWeight.w900,
                   fontFamily: ArabicFonts.Tajawal,
                   package: 'google_fonts_arabic',
                 ),

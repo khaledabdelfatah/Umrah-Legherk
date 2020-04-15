@@ -259,9 +259,11 @@ class _Home_ScreenState extends State<Home_Screen> {
                                         )));
                           });
                     });
-              } else if (snapShot == null) {
+              } else   {
                 return Container(
                   height: 300,
+                  width: MediaQuery.of(context).size.width,
+                   
                   child: Center(
                     child: Text(
                       "لا يوجد طلبات بالتطوع",
@@ -275,6 +277,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                   ),
                 );
               }
+    
             }),
       ),
       Divider(color: Colors.orange),
