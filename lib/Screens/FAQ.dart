@@ -4,14 +4,16 @@ import 'package:google_fonts_arabic/fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
 class FAQ extends StatefulWidget {
   static String id = 'FAQ';
   @override
   _FAQState createState() => _FAQState();
 }
+//
 
+ 
+
+//
 class _FAQState extends State<FAQ> {
   @override
   Widget build(BuildContext context) {
@@ -45,18 +47,28 @@ class _FAQState extends State<FAQ> {
             child: ListView(children: [
               Dismissible(
                 child: Card(
-                  color: Colors.red,
-                  child: Text(
-                    'لمعرفة تفاصيل اكثر يرجي الضغط علي الرابط الموجود في المصدر-الكلمه باللون الاحمر-',
-                    style: TextStyle(
-                      fontSize: 18,
-                      // backgroundColor: Colors.lightGreen,
-                      letterSpacing: .5,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: ArabicFonts.El_Messiri,
-                      package: 'google_fonts_arabic',
-                    ),
+                        shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(
+                          color: Colors.orange,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                          color: Colors.blueGrey,
+                   child: Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: Text(
+                      'جميع مصادر الاجابات مذكوره وبمجرد الضغط عليها يتم تحويلك الي موقع الاجابه',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        // backgroundColor: Colors.lightGreen,
+                        letterSpacing: .5,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: ArabicFonts.El_Messiri,
+                        package: 'google_fonts_arabic',
+                      ),
                   ),
+                   ),
                 ),
 
                 key: UniqueKey(),
@@ -114,6 +126,7 @@ class _FAQState extends State<FAQ> {
                       siteUrl:
                           'https://www.islamweb.net/ar/fatwa/121173/%D8%AD%D9%83%D9%85-%D9%87%D8%A8%D8%A9-%D8%AB%D9%88%D8%A7%D8%A8-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84-%D9%84%D9%84%D8%A3%D9%82%D8%B1%D8%A8%D8%A7%D8%A1-%D9%88%D8%BA%D9%8A%D8%B1%D9%87%D9%85',
                       src: 'اسلام ويب'),
+                   
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
                       context: context,
@@ -165,22 +178,30 @@ Card faqCard(
     BuildContext context}) {
   return Card(
     margin: EdgeInsets.all(3),
-    color: Colors.orange,
+    color: Color(0XFF3B4254),
     child: ExpansionTile(
       onExpansionChanged: (isExpended) {
         if (isExpended) {
-          print("Its EXpended");
+          print("the  $questionTitle is expanded");
         } else
-          print("Ohhhh,, its Not ");
+          print("the  $questionTitle is  Not expanded ");
       },
       title: Text(
         questionTitle,
         style: TextStyle(
           fontWeight: FontWeight.w900,
           fontFamily: ArabicFonts.Mada,
+          color: Colors.lime,
           package: 'google_fonts_arabic',
         ),
       ),
+      subtitle: Text("المصدر :- $src" ,
+      style: TextStyle(
+        color: Colors.orange,
+        fontWeight: FontWeight.w600,
+          fontFamily: ArabicFonts.Cairo,
+          package: 'google_fonts_arabic',
+      ),),
       children: <Widget>[
         Text(
           answer,
@@ -190,6 +211,7 @@ Card faqCard(
             fontWeight: FontWeight.w600,
             fontFamily: ArabicFonts.Changa,
             package: 'google_fonts_arabic',
+            color: Colors.white
           ),
         ),
         InkWell(

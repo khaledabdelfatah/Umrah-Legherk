@@ -241,6 +241,7 @@ currentUserName=document['name'];
                       SizedBox(width: 10.0),
                       InkWell(
                         onTap: () async {
+                        
                           var alertStyle = AlertStyle(
                             animationType: AnimationType.fromTop,
                             isCloseButton: false,

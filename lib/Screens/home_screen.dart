@@ -20,6 +20,7 @@ import 'package:umruh_lgherak/Widgets/home/buildList_Item.dart';
 import 'package:umruh_lgherak/Widgets/home/completed_Request.dart';
 import 'package:umruh_lgherak/Widgets/home/homeDrawer_widger.dart';
 import 'package:umruh_lgherak/Widgets/home/loading-Widget.dart';
+import 'package:umruh_lgherak/Widgets/home/whoAmI.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../testWidget.dart';
@@ -123,17 +124,17 @@ class _Home_ScreenState extends State<Home_Screen> {
             color: Colors.orangeAccent[400],
           ),
           Text(
-            '\"افضل المتطوعين لهذا الشهر \"',
-            // textAlign: TextAlign.justify,
-            textDirection: TextDirection.rtl,
-            style: TextStyle(
-                color: Colors.deepOrange,
-                // backgroundColor: Colors.teal.withOpacity(.2),
-                fontWeight: FontWeight.w600,
-                fontFamily: ArabicFonts.Amiri,
-                package: 'google_fonts_arabic',
-                fontSize: 20.0),
-          ),
+              '\"افضل المتطوعين لهذا الشهر \"',
+              // textAlign: TextAlign.justify,
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                  color: Colors.deepOrange,
+                  // backgroundColor: Colors.teal.withOpacity(.2),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: ArabicFonts.Amiri,
+                  package: 'google_fonts_arabic',
+                  fontSize: 20.0),
+            ),
           Icon(
             Icons.star,
             textDirection: TextDirection.rtl,
@@ -146,13 +147,14 @@ class _Home_ScreenState extends State<Home_Screen> {
           height: 200,
           // width: MediaQuery.of(context).size.width,
           child: FutureBuilder(
-              future: topVolounters.getData(),
+              future: topVolounters.getTopVoluntersData(),
               builder: (context, snapShot) {
                 if (snapShot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: loadingWidget(),
                   );
-                } else if (snapShot.hasData) {
+                } else if ( snapShot.hasData ) {
+     
                   return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: snapShot.data.length,
@@ -173,23 +175,16 @@ class _Home_ScreenState extends State<Home_Screen> {
                             textColor: Color(0xFFDA9551),
                             cheight: height);
                       });
-                } else {
-                  return Center(
-                    child: Text(
-                      "لم يقم احد بالتطوع لهذا الشهر",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: ArabicFonts.Cairo,
-                        package: 'google_fonts_arabic',
-                      ),
-                    ),
-                  );
+                } else   {
+
+                  
+                  print('Helo World');
                 }
+                 
               })),
 
       // title: Text(snapShot.data[index].data['title']),
-
+/** */
       Divider(
         color: Colors.orange,
       ),

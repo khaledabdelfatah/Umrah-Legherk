@@ -193,9 +193,9 @@ class _CenteredTextState extends State<CenteredText> {
               " مرحبا بك معنا يا ",
               style: TextStyle(
                 fontSize: 30,
-                fontWeight: FontWeight.bold,
+                // fontWeight: FontWeight.bold,
                 color: Colors.white,
-                fontFamily: ArabicFonts.Cairo,
+                fontFamily: ArabicFonts.Changa,
                 package: 'google_fonts_arabic',
               ),
               textDirection: TextDirection.rtl,
@@ -205,7 +205,7 @@ class _CenteredTextState extends State<CenteredText> {
               style: TextStyle(
                 fontSize: 35,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepOrangeAccent[700],
+                color: Colors.black,
                 fontFamily: ArabicFonts.Katibeh,
                 package: 'google_fonts_arabic',
               ),
@@ -236,10 +236,10 @@ class _CenteredTextState extends State<CenteredText> {
             Text(
               "\"اصنع الخير لك وللناس\"",
               style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
+                fontSize: 40,
+                // fontWeight: FontWeight.bold,
                 color: Colors.orange,
-                fontFamily: ArabicFonts.Scheherazade,
+                fontFamily: ArabicFonts.Jomhuria,
                 package: 'google_fonts_arabic',
               ),
               textDirection: TextDirection.rtl,

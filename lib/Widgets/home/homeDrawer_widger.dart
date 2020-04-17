@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
+import 'package:umruh_lgherak/Widgets/home/whoAmI.dart';
 
 Drawer homeDrawer(
     {BuildContext context,
@@ -133,7 +134,9 @@ Drawer homeDrawer(
 
       Divider(),
       drawerCustum_widget(
-          navigateingFunction: () {},
+          navigateingFunction: () {
+            c(context);
+          },
           icon: Icons.format_quote,
           title: "من انا؟",
           context: context),

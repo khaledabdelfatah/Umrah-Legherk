@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class GetTopVolounters {
   String x;
-  Future getData() async {
+  Future getTopVoluntersData() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('users').getDocuments();
+    var qn = await firestore.collection('users').where('number_ofVolunteering',isGreaterThanOrEqualTo: 1).getDocuments();
     return qn.documents;
   }
 
@@ -27,23 +27,23 @@ class GetTopVolounters {
     return qn.documents;
   }
 
-  FutureBuilder builder() {
-    return FutureBuilder(
-        future: getData(),
-        builder: (context, snapShot) {
-          if (snapShot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: Text("  Im Loading"),
-            );
-          } else {
-            return ListView.builder(
-                itemCount: snapShot.data.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(snapShot.data[index].data['title']),
-                  );
-                });
-          }
-        });
-  }
+  // FutureBuilder builder() {
+  //   return FutureBuilder(
+  //       future: getData(),
+  //       builder: (context, snapShot) {
+  //         if (snapShot.connectionState == ConnectionState.waiting) {
+  //           return Center(
+  //             child: Text("  Im Loading"),
+  //           );
+  //         } else {
+  //           return ListView.builder(
+  //               itemCount: snapShot.data.length,
+  //               itemBuilder: (context, index) {
+  //                 return ListTile(
+  //                   title: Text(snapShot.data[index].data['title']),
+  //                 );
+  //               });
+  //         }
+  //       });
+  // }
 }

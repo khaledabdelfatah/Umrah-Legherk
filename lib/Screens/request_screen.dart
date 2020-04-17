@@ -11,6 +11,7 @@ import 'package:path/path.dart' as path;
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:umruh_lgherak/Screens/home_screen.dart';
 import 'package:umruh_lgherak/Services/new_request.dart';
+import 'package:umruh_lgherak/Services/validate_regestration.dart';
 import 'package:umruh_lgherak/Widgets/home/buildHor_list.dart';
 import 'package:umruh_lgherak/Widgets/login_regestration/customshape.dart';
 import 'package:umruh_lgherak/Widgets/login_regestration/responsive.dart';
@@ -210,6 +211,10 @@ class _Request_ScreenState extends State<Request_Screen> {
                     print(_detailsController.text +
                         '\n from RequestingScreen.dart \n' +
                         _requestNameController.text);
+                        try{
+                    var validName=      validateName(name: _requestNameController.text);
+ var validDesc=_detailsController.text==null;
+ if(validName==''&&validDesc==false){
                     await uploadFile();
                     await _request_service.add_request(
                       details: _detailsController.text,
@@ -217,40 +222,44 @@ class _Request_ScreenState extends State<Request_Screen> {
                       title: _requestNameController.text,
                       imgUrl: imgUrl,
                     );
-            
-
+ }
+                        }catch(e){print(e.toString());}
                     return Alert(
                       context: context,
                       title: "تم اضافة طلبك بنجاح",
                       desc: "شكرا لك علي استخدامك البرنامج,تم اضافة طلبك بنجاح",
-                      buttons: [DialogButton(child: Text("انتقل للصفحه الرئيسيه"),
-                       onPressed: ()
-                       {Navigator.pop(context); 
-                         Navigator.pushReplacementNamed(context, Home_Screen.id);})],
+                      buttons: [
+                        DialogButton(
+                            child: Text("انتقل للصفحه الرئيسيه",
+                            style: TextStyle(
+                               fontFamily: ArabicFonts.Cairo,
+                              package: 'google_fonts_arabic',
+                            ),),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.pushReplacementNamed(
+                                  context, Home_Screen.id);
+                            })
+                      ],
                       style: AlertStyle(
-                        titleStyle: TextStyle(
-                            color: Colors.green,
-                    fontFamily: ArabicFonts.Tajawal,
-                    package: 'google_fonts_arabic',
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w800
-                        ),
-                        animationType: AnimationType.shrink,
-                        descStyle: TextStyle(
-                                 color: Colors.orange[900],
-                    fontFamily: ArabicFonts.Cairo,
-                    package: 'google_fonts_arabic',
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w600
-                        ) 
+                          titleStyle: TextStyle(
+                              color: Colors.green,
+                              fontFamily: ArabicFonts.Tajawal,
+                              package: 'google_fonts_arabic',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w800),
+                          animationType: AnimationType.shrink,
+                          descStyle: TextStyle(
+                              color: Colors.orange[900],
+                              fontFamily: ArabicFonts.Cairo,
+                              package: 'google_fonts_arabic',
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w600)),
+                      image: Image.asset(
+                        "assets/img/ok.png",
                       ),
-                      image: Image.asset("assets/img/ok.png", ),
                     ).show();
-                
                   },
-
-                   
-
                   minWidth: 200.0,
                   height: 42.0,
                   child: Text(
@@ -266,17 +275,28 @@ class _Request_ScreenState extends State<Request_Screen> {
               ),
               Dismissible(
                 child: Card(
-                  color: Colors.grey[700],
-                  child: Text(
-                    'تاكد من ان جميع ال',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.orange,
-                      // backgroundColor: Colors.lightGreen,
-                      letterSpacing: .5,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: ArabicFonts.El_Messiri,
-                      package: 'google_fonts_arabic',
+                  shape: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      borderSide: BorderSide(
+                          color: Colors.orange,
+                          width: 2,
+                          style: BorderStyle.solid)),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'اذا حدثت اي مشكله خلال تقديم الطلب برجاء التواصل معنا',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.orange,
+                          // backgroundColor: Colors.lightGreen,
+                          letterSpacing: .5,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: ArabicFonts.El_Messiri,
+                          package: 'google_fonts_arabic',
+                        ),
+                      ),
                     ),
                   ),
                 ),
