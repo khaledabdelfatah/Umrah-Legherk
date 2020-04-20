@@ -386,7 +386,7 @@ class _Home_ScreenState extends State<Home_Screen> {
           singOut: () async {
             Alert(
                 context: context,
-                title: '?هل تريد تسجيل الخروج',
+                title: 'هل تريد تسجيل الخروج؟',
                 closeFunction: () {
                   Navigator.pop(context);
                 },

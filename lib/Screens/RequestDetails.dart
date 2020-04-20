@@ -7,6 +7,7 @@ import 'package:google_fonts_arabic/fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:umruh_lgherak/Screens/home_screen.dart';
 import 'package:umruh_lgherak/Services/volunteerToRequest.dart';
+import 'package:umruh_lgherak/Widgets/RequestDetelis/detelisWidget.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewDetalis extends StatefulWidget {
@@ -241,50 +242,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
                       SizedBox(width: 10.0),
                       InkWell(
                         onTap: () async {
-                          var alertStyle = AlertStyle(
-                            animationType: AnimationType.fromTop,
-                            isCloseButton: false,
-                            isOverlayTapDismiss: false,
-                            descStyle: TextStyle(fontWeight: FontWeight.bold),
-                            animationDuration: Duration(milliseconds: 400),
-                            alertBorder: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(0.0),
-                              side: BorderSide(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            titleStyle: TextStyle(
-                              color: Colors.red,
-                            ),
-                          );
-                          var whatsappUrl =
-                              "whatsapp://send?phone=${widget.phoneNumber}";
-                          await canLaunch(whatsappUrl)
-                              ? launch(whatsappUrl)
-                              : Alert(
-                                  context: context,
-                                  style: alertStyle,
-                                  type: AlertType.warning,
-                                  title: "هاتفك لا يحتوي علي تطبيق واتساب",
-                                  desc:
-                                      "حتي تتمكن من استخدام هذه الخاصيه يجب ان يكون تطبيق واتساب مثبت لديك بالفعل",
-                                  buttons: [
-                                    DialogButton(
-                                      child: Text(
-                                        "الرجوع للصفحه السابقه",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontFamily: ArabicFonts.Cairo,
-                                          package: 'google_fonts_arabic',
-                                          fontSize: 15.0,
-                                        ),
-                                      ),
-                                      onPressed: () => Navigator.pop(context),
-                                      color: Color.fromRGBO(0, 179, 134, 1.0),
-                                      radius: BorderRadius.circular(0.0),
-                                    ),
-                                  ],
-                                ).show();
+                         launchWhatsapp(context: context,phNumber: widget.phoneNumber);
                         },
                         child: Container(
                           height: 50.0,
@@ -295,51 +253,8 @@ class _ViewDetalisState extends State<ViewDetalis> {
                       ),
                       InkWell(
                         onTap: () async {
-                          var url = "tel:${widget.phoneNumber}";
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            var alertStyle = AlertStyle(
-                              animationType: AnimationType.fromTop,
-                              isCloseButton: false,
-                              isOverlayTapDismiss: false,
-                              descStyle: TextStyle(fontWeight: FontWeight.bold),
-                              animationDuration: Duration(milliseconds: 400),
-                              alertBorder: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(0.0),
-                                side: BorderSide(
-                                  color: Colors.grey,
-                                ),
-                              ),
-                              titleStyle: TextStyle(
-                                color: Colors.red,
-                              ),
-                            );
-                            Alert(
-                              context: context,
-                              style: alertStyle,
-                              type: AlertType.warning,
-                              title: "حدث خطا اثناء الاتصال",
-                              desc:
-                                  "عفوا ,,حث حظا اثناء محاولة الاتصال رجاء اعد المحاوله",
-                              buttons: [
-                                DialogButton(
-                                  child: Text(
-                                    "الرجوع للصفحه السابقه",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontFamily: ArabicFonts.Cairo,
-                                      package: 'google_fonts_arabic',
-                                      fontSize: 15.0,
-                                    ),
-                                  ),
-                                  onPressed: () => Navigator.pop(context),
-                                  color: Color.fromRGBO(0, 179, 134, 1.0),
-                                  radius: BorderRadius.circular(0.0),
-                                ),
-                              ],
-                            ).show();
-                          }
+                          launchPhoneNumber(
+                              context: context, pnumber: widget.phoneNumber);
                         },
                         child: Container(
                             height: 50.0,
@@ -410,6 +325,43 @@ class _ViewDetalisState extends State<ViewDetalis> {
                                       try {
                                         Navigator.pop(context);
                                         Alert(
+                                            content: Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: <Widget>[
+                                                    InkWell(
+                                                      onTap: launchWhatsapp(
+                                                          phNumber: widget
+                                                              .phoneNumber,
+                                                          context: context),
+                                                      child: Container(
+                                                        height: 50.0,
+                                                        width: 50.0,
+                                                        color: Colors.white,
+                                                        child: Image.asset(
+                                                            'assets/img/whatsIcon1.png'),
+                                                      ),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: (){
+                                                       launchPhoneNumber(context: context,pnumber: widget.phoneNumber);
+                                                      },
+                                                                                                          child: Container(
+                                                          height: 50.0,
+                                                          width: 50.0,
+                                                          color: Colors.white,
+                                                          child: Image.asset(
+                                                            'assets/img/callIcon3.png',
+                                                            color: Colors.green,
+                                                          )),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
                                             context: context,
                                             buttons: [
                                               DialogButton(
@@ -435,7 +387,7 @@ class _ViewDetalisState extends State<ViewDetalis> {
                                             ],
                                             title: "شكرا لك",
                                             desc:
-                                                " شكرا لتطوعك, تاكد من تواصلك مع صاحب الطلب من خلال اي وسيله موجوده في البرنامج",
+                                                " شكرا لتطوعك, تاكد من تواصلك مع صاحب الطلب من خلال اي وسيله موجوده في البرنامج او يمكنك الضغط علي اي ايقونه لللتواصل",
                                             image: Image.asset(
                                                 "assets/img/5de.gif"),
                                             closeFunction: () =>
