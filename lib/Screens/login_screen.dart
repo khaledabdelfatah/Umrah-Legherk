@@ -1,6 +1,4 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
+ 
 import 'package:flutter/material.dart';
 // import '../Services/createUser.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -34,8 +32,7 @@ class _Login_screenState extends State<LoginScreen>
   AnimationController animationController;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+     super.initState();
     animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(

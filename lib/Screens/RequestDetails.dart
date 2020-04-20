@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:umruh_lgherak/Screens/home_screen.dart';
-import 'package:umruh_lgherak/Services/volunteeringService.dart';
+import 'package:umruh_lgherak/Services/volunteerToRequest.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ViewDetalis extends StatefulWidget {
@@ -39,7 +39,8 @@ class _ViewDetalisState extends State<ViewDetalis> {
     getCurrentUser();
     print('userid in the requst is' + widget.status);
   }
-String currentUserName='';
+
+  String currentUserName = '';
   FirebaseUser user;
   FirebaseAuth _auth;
   getCurrentUser() async {
@@ -47,10 +48,11 @@ String currentUserName='';
     user = await _auth.currentUser();
     var docRef = Firestore.instance.collection('users').document(user.uid);
     docRef.get().then((document) {
-       setState(() {
-currentUserName=document['name'];
+      setState(() {
+        currentUserName = document['name'];
       });
     });
+    print(widget.phoneNumber);
   }
 
   @override
@@ -108,12 +110,10 @@ currentUserName=document['name'];
                     child: Row(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.only(right:4.0),
+                          padding: const EdgeInsets.only(right: 4.0),
                           child: Text(
                             'عمره لـ :- ',
-                          
                             style: TextStyle(
-                            
                                 fontFamily: ArabicFonts.Cairo,
                                 package: 'google_fonts_arabic',
                                 fontSize: 25.0,
@@ -148,17 +148,17 @@ currentUserName=document['name'];
                     ),
                   ),
                   Padding(
-                      padding: EdgeInsets.only( right:0.0),
+                      padding: EdgeInsets.only(right: 0.0),
                       child: Container(
-                        width:MediaQuery.of(context).size.width ,
+                        width: MediaQuery.of(context).size.width,
                         child: Text(
-                         widget.reqDetalis,
+                          widget.reqDetalis,
                           style: TextStyle(
                             fontFamily: ArabicFonts.Changa,
                             package: 'google_fonts_arabic',
                             fontSize: 18.0,
                             letterSpacing: 0.0,
-                            fontFeatures: [FontFeature.slashedZero()  ],
+                            fontFeatures: [FontFeature.slashedZero()],
                             color: Colors.orange,
                           ),
                         ),
@@ -241,7 +241,6 @@ currentUserName=document['name'];
                       SizedBox(width: 10.0),
                       InkWell(
                         onTap: () async {
-                        
                           var alertStyle = AlertStyle(
                             animationType: AnimationType.fromTop,
                             isCloseButton: false,
@@ -356,15 +355,9 @@ currentUserName=document['name'];
                           width: MediaQuery.of(context).size.width - 130.0,
                           child: InkWell(
                             onTap: () {
-                              // What Will Happen Here Will Remaine Here
-/**
- * First We make a new collection cALllaed compleated-Request
- * 
- */
                               Alert(
                                 context: context,
                                 type: AlertType.warning,
-                                 
                                 title: "هل انت متاكد؟",
                                 desc:
                                     " هل انت متاكد من انك تريد التطوع لهذا الطلب ,, لا يمكنك التراجع في قرارك!",
@@ -407,60 +400,67 @@ currentUserName=document['name'];
                                       ),
                                     ),
                                     onPressed: () {
-                                      SubmitVolantiring().updateInfo(
+                                      // onPressed Function That happens when user make sure that he would like to make the request
+                                      // try{
+                                      updateInfo(
+                                          id: widget.requestPublisher,
                                           volunteerPerson: currentUserName,
-                                          id: widget.requestPublisher);
-                                      Navigator.pop(context);
-                                      Alert(
-                                        context: context,
-                                        buttons: [
-                                          DialogButton(
-                                              child: Text(
-                                                "الانتقال للصفحه الرئيسيه",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 17,
-                                                  fontFamily:
-                                                      ArabicFonts.Tajawal,
-                                                  fontWeight: FontWeight.w700,
-                                                  package:
-                                                      'google_fonts_arabic',
-                                                ),
-                                              ),
-                                              onPressed: () {
+                                          context: context);
+
+                                      try {
+                                        Navigator.pop(context);
+                                        Alert(
+                                            context: context,
+                                            buttons: [
+                                              DialogButton(
+                                                  child: Text(
+                                                    "الانتقال للصفحه الرئيسيه",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 17,
+                                                      fontFamily:
+                                                          ArabicFonts.Tajawal,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      package:
+                                                          'google_fonts_arabic',
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator
+                                                        .pushReplacementNamed(
+                                                            context,
+                                                            Home_Screen.id);
+                                                  })
+                                            ],
+                                            title: "شكرا لك",
+                                            desc:
+                                                " شكرا لتطوعك, تاكد من تواصلك مع صاحب الطلب من خلال اي وسيله موجوده في البرنامج",
+                                            image: Image.asset(
+                                                "assets/img/5de.gif"),
+                                            closeFunction: () =>
                                                 Navigator.pushReplacementNamed(
-                                                    context, Home_Screen.id);
-                                              })
-                                        ],
-                                        title: "شكرا لك",
-                                        desc:
-                                            " شكرا لتطوعك, تاكد من تواصلك مع صاحب الطلب من خلال اي وسيله موجوده في البرنامج",
-                                        image:
-                                            Image.asset("assets/img/5de.gif"),
-                                        closeFunction: () =>
-                                            Navigator.pushReplacementNamed(
-                                                context, Home_Screen.id),
-                                                style: AlertStyle(
-                                                  titleStyle: TextStyle(
-                                                    color: Colors.green,
-                                                  fontSize: 37,
-                                                  fontFamily:
-                                                      ArabicFonts.Aref_Ruqaa,
-                                                  fontWeight: FontWeight.w700,
-                                                  package:
-                                                      'google_fonts_arabic',
-                                                  ),
-                                                   descStyle: TextStyle(
-                                                    color: Colors.green,
-                                                  fontSize: 15,
-                                                  fontFamily:
-                                                      ArabicFonts.Cairo,
-                                                  fontWeight: FontWeight.w700,
-                                                  package:
-                                                      'google_fonts_arabic',
-                                                  ),
-                                                )
-                                      ).show();
+                                                    context, Home_Screen.id),
+                                            style: AlertStyle(
+                                              titleStyle: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 37,
+                                                fontFamily:
+                                                    ArabicFonts.Aref_Ruqaa,
+                                                fontWeight: FontWeight.w700,
+                                                package: 'google_fonts_arabic',
+                                              ),
+                                              descStyle: TextStyle(
+                                                color: Colors.green,
+                                                fontSize: 15,
+                                                fontFamily: ArabicFonts.Cairo,
+                                                fontWeight: FontWeight.w700,
+                                                package: 'google_fonts_arabic',
+                                              ),
+                                            )).show();
+                                      } catch (e) {
+                                        print(e.toString());
+                                      }
                                     },
                                     gradient: LinearGradient(colors: [
                                       Color.fromRGBO(116, 116, 191, 1.0),
@@ -474,10 +474,11 @@ currentUserName=document['name'];
                                 child: Text(
                               'تطوع الان لهذا الطلب',
                               style: TextStyle(
-                                  fontFamily: 'Montserrat',
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
+                                  fontFamily: ArabicFonts.Changa,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 20,
+                                  package: 'google_fonts_arabic',
+                                  color: Colors.white),
                             )),
                           ))
                     ]))),

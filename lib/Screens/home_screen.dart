@@ -8,8 +8,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts_arabic/fonts.dart';
-import 'package:umruh_lgherak/Screens/DetailsScreen.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:umruh_lgherak/Screens/FAQ.dart';
+import 'package:umruh_lgherak/Screens/RequestDetails.dart';
 
 import 'package:umruh_lgherak/Screens/welcome_screen.dart';
 import 'package:umruh_lgherak/Services/getTopVol.dart';
@@ -20,13 +21,11 @@ import 'package:umruh_lgherak/Widgets/home/buildList_Item.dart';
 import 'package:umruh_lgherak/Widgets/home/completed_Request.dart';
 import 'package:umruh_lgherak/Widgets/home/homeDrawer_widger.dart';
 import 'package:umruh_lgherak/Widgets/home/loading-Widget.dart';
-import 'package:umruh_lgherak/Widgets/home/whoAmI.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-import '../testWidget.dart';
 
 class Home_Screen extends StatefulWidget {
   static String id = 'Home_Screen';
+
   @override
   _Home_ScreenState createState() => _Home_ScreenState();
 }
@@ -39,6 +38,7 @@ class _Home_ScreenState extends State<Home_Screen> {
   String userPhoneNumber = '';
   FirebaseUser user;
   FirebaseAuth _auth;
+  String customStringRating = ' ';
   getCurrentUser() async {
     _auth = FirebaseAuth.instance;
     user = await _auth.currentUser();
@@ -92,7 +92,7 @@ class _Home_ScreenState extends State<Home_Screen> {
     });
   }
 
- GlobalKey<FormState>     _formKey = new GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     GetTopVolounters topVolounters = GetTopVolounters();
@@ -102,8 +102,7 @@ class _Home_ScreenState extends State<Home_Screen> {
       systemNavigationBarColor: Colors.blue, // navigation bar color
       statusBarColor: Colors.orange, // status bar color
     ));
-//For TEST ONLY TODO:
-    double height = MediaQuery.of(context).size.height;
+     double height = MediaQuery.of(context).size.height;
     var children2 = <Widget>[
       HomeStack(
           context: context,
@@ -124,17 +123,17 @@ class _Home_ScreenState extends State<Home_Screen> {
             color: Colors.orangeAccent[400],
           ),
           Text(
-              '\"افضل المتطوعين لهذا الشهر \"',
-              // textAlign: TextAlign.justify,
-              textDirection: TextDirection.rtl,
-              style: TextStyle(
-                  color: Colors.deepOrange,
-                  // backgroundColor: Colors.teal.withOpacity(.2),
-                  fontWeight: FontWeight.w600,
-                  fontFamily: ArabicFonts.Amiri,
-                  package: 'google_fonts_arabic',
-                  fontSize: 20.0),
-            ),
+            '\"افضل المتطوعين لهذا الشهر \"',
+            // textAlign: TextAlign.justify,
+            textDirection: TextDirection.rtl,
+            style: TextStyle(
+                color: Colors.deepOrange,
+                // backgroundColor: Colors.teal.withOpacity(.2),
+                fontWeight: FontWeight.w600,
+                fontFamily: ArabicFonts.Amiri,
+                package: 'google_fonts_arabic',
+                fontSize: 20.0),
+          ),
           Icon(
             Icons.star,
             textDirection: TextDirection.rtl,
@@ -153,8 +152,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                   return Center(
                     child: loadingWidget(),
                   );
-                } else if ( snapShot.hasData ) {
-     
+                } else if (snapShot.hasData) {
                   return ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: snapShot.data.length,
@@ -175,12 +173,9 @@ class _Home_ScreenState extends State<Home_Screen> {
                             textColor: Color(0xFFDA9551),
                             cheight: height);
                       });
-                } else   {
-
-                  
+                } else {
                   print('Helo World');
                 }
-                 
               })),
 
       // title: Text(snapShot.data[index].data['title']),
@@ -209,71 +204,80 @@ class _Home_ScreenState extends State<Home_Screen> {
 
       // Recent Requests
       Container(
-        child: FutureBuilder(
-            future: topVolounters.getUncomplettedRequest(),
-            builder: (context, snapShot) {
-              if (snapShot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: loadingWidget(),
-                );
-              } else if (snapShot.hasData) {
-                return ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: snapShot.data.length,
-                    itemBuilder: (context, index) {
-                      return buildListItem(
-                          foodName: snapShot.data[index].data['title'],
-                          imgPath: snapShot.data[index].data['Pic_url'] == null
-                              ? AssetImage(
-                                  'assets/img/appIcon.png',
-                                )
-                              : NetworkImage(
-                                  snapShot.data[index].data['Pic_url']),
-                          date: snapShot.data[index].data['puplished_date'],
-                          showRequestDetails: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => ViewDetalis(
-                                          imgLink: snapShot
-                                              .data[index].data['Pic_url'],
-                                          phoneNumber: userPhoneNumber,
-                                          publisedDate: snapShot.data[index]
-                                              .data['puplished_date'],
-                                          reqDetalis: snapShot.data[index]
-                                              .data['request_details'],
-                                          title: snapShot
-                                              .data[index].data['title'],
-                                          puplisherName: snapShot
-                                              .data[index].data['puplisher'],
-                                          status: snapShot.data[index]
-                                              .data['person_status'],
-                                          requestPublisher:
-                                              snapShot.data[index].documentID,
-                                        )));
-                          });
-                    });
-              } else   {
-                return Container(
-                  height: 300,
-                  width: MediaQuery.of(context).size.width,
-                   
-                  child: Center(
-                    child: Text(
-                      "لا يوجد طلبات بالتطوع",
-                      style: TextStyle(
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w700,
-                        fontFamily: ArabicFonts.Cairo,
-                        package: 'google_fonts_arabic',
+        child: SingleChildScrollView(
+          child: FutureBuilder(
+              future: topVolounters.getUncomplettedRequest(),
+              builder: (context, snapShot) {
+                if (snapShot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: loadingWidget(),
+                  );
+                } else if (snapShot.hasData) {
+                  return SingleChildScrollView(
+                    physics: ScrollPhysics(),
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        addAutomaticKeepAlives: true,
+                        dragStartBehavior: DragStartBehavior.start,
+                        scrollDirection: Axis.vertical,
+                        itemCount: snapShot.data.length,
+                        itemBuilder: (context, index) {
+                          return buildListItem(
+                              foodName: snapShot.data[index].data['title'],
+                              imgPath:
+                                  snapShot.data[index].data['Pic_url'] == null
+                                      ? AssetImage(
+                                          'assets/img/appIcon.png',
+                                        )
+                                      : NetworkImage(
+                                          snapShot.data[index].data['Pic_url']),
+                              date: snapShot.data[index].data['puplished_date'],
+                              showRequestDetails: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => ViewDetalis(
+                                              imgLink: snapShot
+                                                  .data[index].data['Pic_url'],
+                                              phoneNumber: snapShot.data[index]
+                                                  .data['phoneNumber'],
+                                              publisedDate: snapShot.data[index]
+                                                  .data['puplished_date'],
+                                              reqDetalis: snapShot.data[index]
+                                                  .data['request_details'],
+                                              title: snapShot
+                                                  .data[index].data['title'],
+                                              puplisherName: snapShot
+                                                  .data[index]
+                                                  .data['puplisher'],
+                                              status: snapShot.data[index]
+                                                  .data['person_status'],
+                                              requestPublisher: snapShot
+                                                  .data[index].documentID,
+                                            )));
+                              });
+                        }),
+                  );
+                } else {
+                  return Container(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                      child: Text(
+                        "لا يوجد طلبات بالتطوع",
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: ArabicFonts.Cairo,
+                          package: 'google_fonts_arabic',
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }
-    
-            }),
+                  );
+                }
+              }),
+        ),
       ),
       Divider(color: Colors.orange),
 
@@ -320,11 +324,10 @@ class _Home_ScreenState extends State<Home_Screen> {
                         SliverChildBuilderDelegate((context, index) {
                       return completedRequestCard(
                           context: context,
-                          imgPath:
-                              snapShot.data[index].data['Pic_url'] == null
-                                  ? AssetImage('assets/img/appIcon.png')
-                                  : NetworkImage(
-                                      snapShot.data[index].data['Pic_url']),
+                          imgPath: snapShot.data[index].data['Pic_url'] == null
+                              ? AssetImage('assets/img/appIcon.png')
+                              : NetworkImage(
+                                  snapShot.data[index].data['Pic_url']),
                           personName: snapShot.data[index].data['title'],
                           volName: snapShot
                               .data[index].data['volunteerPerson_name']);
@@ -381,9 +384,59 @@ class _Home_ScreenState extends State<Home_Screen> {
             Navigator.pushNamed(context, FAQ.id);
           },
           singOut: () async {
-            await _auth.signOut();
-            Navigator.pushNamedAndRemoveUntil(
-                context, WelcomePage.id, (Route<dynamic> route) => false);
+            Alert(
+                context: context,
+                title: '?هل تريد تسجيل الخروج',
+                closeFunction: () {
+                  Navigator.pop(context);
+                },
+                style: AlertStyle(
+                    titleStyle: TextStyle(
+                        color: Colors.red,
+                        fontFamily: ArabicFonts.Tajawal,
+                        package: 'google_fonts_arabic',
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w800),
+                    animationType: AnimationType.shrink,
+                    descStyle: TextStyle(
+                        color: Colors.grey,
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w600)),
+                type: AlertType.warning,
+                desc:
+                    'هل انت متاكد من انك تريد تسجيل الخروج, لا يمكنك التراجع  ',
+                buttons: [
+                  DialogButton(
+                    color: Colors.red,
+                    child: Text(
+                      "سجل الخروج",
+                      style: TextStyle(
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                    onPressed: () async {
+                      await _auth.signOut();
+                      Navigator.pushNamedAndRemoveUntil(context, WelcomePage.id,
+                          (Route<dynamic> route) => false);
+                    },
+                  ),
+                  DialogButton(
+                    color: Colors.green,
+                    child: Text(
+                      "الصفحه الرئيسيه",
+                      style: TextStyle(
+                        fontFamily: ArabicFonts.Cairo,
+                        package: 'google_fonts_arabic',
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ]).show();
           }),
     );
   }

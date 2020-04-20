@@ -20,8 +20,10 @@ class Request_Service {
     _auth = FirebaseAuth.instance;
     String requestPuplisher;
     var docRef = Firestore.instance.collection('users').document(user.uid);
+    String userPhone;
     await docRef.get().then((document) {
       requestPuplisher = document['name'];
+      userPhone = document['phone_number'];
     });
 
     ////
@@ -40,6 +42,7 @@ class Request_Service {
         .document(user.uid + millisecond + formatted)
         .setData({
       'title': title,
+      'phoneNumber': userPhone,
       'puplished_date': formatted,
       'person_status': status,
       'request_details': details,

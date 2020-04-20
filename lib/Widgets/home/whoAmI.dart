@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts_arabic/fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-c(
+showPersonalCard(
   context,
 ) {
   return showModalBottomSheet(
@@ -76,27 +76,36 @@ c(
                                 ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: <Widget>[
                                   InkWell(
-                                    onTap: ()async{
-                            await      _launchmyLink(link: 'https://github.com/khaledabdelfatah/');     
+                                    onTap: () async {
+                                      await _launchmyLink(
+                                          link:
+                                              'https://github.com/khaledabdelfatah/');
                                     },
-                                     child: Image.asset(
-                                    'assets/img/github-logo.png',
-                                  ),
+                                    child: Image.asset(
+                                      'assets/img/github-logo.png',
+                                    ),
                                   ),
                                   InkWell(
-                                    onTap:
-                                    ()async{
-                                     _launchmyLink(link: 'https://www.linkedin.com/in/khaled-abd-elfatah/');},
-                                    child: Image.asset(
-                                        'assets/img/linkedin.png'),
+                                    onTap: () async {
+                                      _launchmyLink(
+                                          link:
+                                              'https://www.linkedin.com/in/khaled-abd-elfatah/');
+                                    },
+                                    child:
+                                        Image.asset('assets/img/linkedin.png'),
                                   ),
                                   InkWell(
-                                    onTap:()async{ _launchmyLink(link: 'https://www.facebook.com/khaloooda.abdelfatah');},
-                                    child: Image.asset(
-                                        'assets/img/facebook.png'),
+                                    onTap: () async {
+                                      _launchmyLink(
+                                          link:
+                                              'https://www.facebook.com/khaloooda.abdelfatah');
+                                    },
+                                    child:
+                                        Image.asset('assets/img/facebook.png'),
                                   ),
                                 ],
                               )
@@ -123,8 +132,9 @@ c(
         );
       });
 }
+
 _launchmyLink({String link}) async {
-   var url = link;
+  var url = link;
   if (await canLaunch(url)) {
     await launch(url);
   } else {

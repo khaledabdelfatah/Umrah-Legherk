@@ -161,7 +161,7 @@ class _CenteredTextState extends State<CenteredText> {
     FirebaseAuth _auth = FirebaseAuth.instance;
     FirebaseUser user = await _auth.currentUser();
     var document =
-        await Firestore.instance.collection('users').document(user.uid);
+          Firestore.instance.collection('users').document(user.uid);
     document.get().then((document) {
       print(document['name']);
       setState(() {
@@ -175,8 +175,7 @@ class _CenteredTextState extends State<CenteredText> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+     super.initState();
     Getname();
   }
 

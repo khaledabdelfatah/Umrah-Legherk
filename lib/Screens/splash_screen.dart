@@ -23,12 +23,11 @@ class _splash_ScreenState extends State<splash_Screen> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
     print('$_seen' + 'From Spalsh Screen');
-    if (!_seen) { //!Seen = this  is the first time the app opens
+    if (!_seen) {
+      //!Seen = this  is the first time the app opens
       Navigator.of(context).pushReplacementNamed(IntroScreen.id);
       await prefs.setBool('seen', true);
-
     } else {
- 
       if (user == null) {
         Timer(Duration(seconds: 2), () {
           Navigator.of(context).pushReplacementNamed(WelcomePage.id);

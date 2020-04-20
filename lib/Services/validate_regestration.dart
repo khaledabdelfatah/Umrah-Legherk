@@ -83,7 +83,7 @@ String cheakBoxValidate({bool val}) {
 TextStyle errorStyle() {
   return TextStyle(
     color: Colors.red,
-    fontWeight: FontWeight.w600,
+     fontWeight: FontWeight.w600,
     fontFamily: ArabicFonts.Tajawal,
     package: 'google_fonts_arabic',
   );

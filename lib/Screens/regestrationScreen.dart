@@ -1,12 +1,9 @@
 import 'dart:io';
 
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts_arabic/fonts.dart';
 
-//TODO
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
@@ -46,8 +43,7 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
   bool isemailValid;
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
+     super.initState();
     animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 3));
     animation = Tween(begin: -1.0, end: 0.0).animate(CurvedAnimation(
@@ -76,10 +72,10 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
 
   Future uploadFile() async {
     // getImage();
-    StorageReference storageReference = await FirebaseStorage.instance
+    StorageReference storageReference =   FirebaseStorage.instance
         .ref()
         .child('profile_pic/${path.basename(_image.path)}}');
-    StorageUploadTask uploadTask = await storageReference.putFile(_image);
+    StorageUploadTask uploadTask =   storageReference.putFile(_image);
     await uploadTask.onComplete;
     print('File Uploaded');
     storageReference.getDownloadURL().then((fileURL) {
@@ -366,13 +362,13 @@ class _Regestration_ScreenState extends State<Regestration_Screen>
               ),
               child: _image == null
                   ? Hero(
-                    tag: "mylogotag",
-                                      child: Icon(
+                      tag: "mylogotag",
+                      child: Icon(
                         Icons.add_a_photo,
                         size: _large ? 40 : (_medium ? 33 : 31),
                         color: Colors.orange[200],
                       ),
-                  )
+                    )
                   : new Container(
                       width: 120.0,
                       height: 190.0,

@@ -3,11 +3,11 @@ import 'package:google_fonts_arabic/fonts.dart';
 
 Widget loadingWidget() {
   return Row(
-     mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
     children: <Widget>[
       CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
-                ),
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+      ),
       Text(
         "جار التحميل ,, برجاء الانتظار ",
         style: TextStyle(
@@ -18,7 +18,7 @@ Widget loadingWidget() {
         ),
       ),
       CircularProgressIndicator(
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
       ),
     ],
   );

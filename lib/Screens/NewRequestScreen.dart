@@ -28,7 +28,7 @@ class _Request_ScreenState extends State<Request_Screen> {
   String imgUrl = '';
   Future uploadFile() async {
     // // getImage();
-    StorageReference storageReference = await FirebaseStorage.instance
+    StorageReference storageReference =   FirebaseStorage.instance
         .ref()
         .child('requests_pic/${path.basename(_image.path)}}');
     StorageUploadTask uploadTask = storageReference.putFile(_image);
@@ -46,8 +46,8 @@ class _Request_ScreenState extends State<Request_Screen> {
   Future getImage() async {
     return await ImagePicker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 300,
-      maxWidth: 300,
+      maxHeight: 500,
+      maxWidth: 500,
     ).then((img) {
       setState(() {
         _image = img;
@@ -59,6 +59,9 @@ class _Request_ScreenState extends State<Request_Screen> {
   TextEditingController _detailsController = TextEditingController();
   Duration waitforalert = Duration(seconds: 5);
   Request_Service _request_service = Request_Service();
+  bool visableStatus = false;
+  String nameError = ' ', imgError = ' ', detelisError = "", statusError = " ";
+
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
@@ -198,67 +201,136 @@ class _Request_ScreenState extends State<Request_Screen> {
 
               //////*
               DetelisSection(detailsController: _detailsController),
-              Padding(padding: EdgeInsets.only(top: 20)),
+              Padding(padding: EdgeInsets.only(top: 10)),
+              Visibility(
+                visible: visableStatus,
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        imgError,
+                        style: errorStyle(),
+                      ),
+                      Text(
+                        nameError,
+                        style: errorStyle(),
+                      ),
+                      Text(
+                        statusError,
+                        style: errorStyle(),
+                      ),
+                      Text(
+                        detelisError,
+                        style: errorStyle(),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              Padding(padding: EdgeInsets.only(top: 10)),
               Material(
                 color: Colors.orange,
                 borderRadius: BorderRadius.all(Radius.circular(30.0)),
                 elevation: 5.0,
                 child: MaterialButton(
                   onPressed: () async {
+                    String validName =
+                        validateName(name: _requestNameController.text);
                     setState(() {
-                      disable = true;
+                      nameError = validName;
+                      visableStatus = true;
                     });
-                    print(_detailsController.text +
-                        '\n from RequestingScreen.dart \n' +
-                        _requestNameController.text);
-                        try{
-                    var validName=      validateName(name: _requestNameController.text);
- var validDesc=_detailsController.text==null;
- if(validName==''&&validDesc==false){
-                    await uploadFile();
-                    await _request_service.add_request(
-                      details: _detailsController.text,
-                      status: dropDownValue,
-                      title: _requestNameController.text,
-                      imgUrl: imgUrl,
-                    );
- }
-                        }catch(e){print(e.toString());}
-                    return Alert(
-                      context: context,
-                      title: "تم اضافة طلبك بنجاح",
-                      desc: "شكرا لك علي استخدامك البرنامج,تم اضافة طلبك بنجاح",
-                      buttons: [
-                        DialogButton(
-                            child: Text("انتقل للصفحه الرئيسيه",
-                            style: TextStyle(
-                               fontFamily: ArabicFonts.Cairo,
-                              package: 'google_fonts_arabic',
-                            ),),
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.pushReplacementNamed(
-                                  context, Home_Screen.id);
-                            })
-                      ],
-                      style: AlertStyle(
-                          titleStyle: TextStyle(
-                              color: Colors.green,
-                              fontFamily: ArabicFonts.Tajawal,
-                              package: 'google_fonts_arabic',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w800),
-                          animationType: AnimationType.shrink,
-                          descStyle: TextStyle(
-                              color: Colors.orange[900],
-                              fontFamily: ArabicFonts.Cairo,
-                              package: 'google_fonts_arabic',
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w600)),
-                      image: Image.asset(
-                        "assets/img/ok.png",
-                      ),
-                    ).show();
+                    //  var validDesc = _detailsController.text == null;
+                    if (_detailsController.text == '') {
+                      setState(() {
+                        detelisError = 'تاكد من كتابتك تفاصيل الطلب';
+                        visableStatus = true;
+                      });
+                    } else {
+                      setState(() {
+                        detelisError = '';
+                        visableStatus = true;
+                      });
+                    }
+
+                    if (dropDownValue == null) {
+                      setState(() {
+                        statusError = "يجب اختيار حالة الشخص";
+                        visableStatus = true;
+                      });
+                    } else {
+                      setState(() {
+                        statusError = "";
+                        visableStatus = true;
+                      });
+                    }
+
+                    try {
+                      if (_image.existsSync() == true) {
+                        imgError = "";
+                      }
+                    } catch (e) {
+                      imgError = "يرجي اختيار صوره  ";
+                    }
+//Validation Compleated
+                    if (validName == '' &&
+                        _detailsController.text != '' &&
+                        dropDownValue != null &&
+                        imgError == '') {
+                      setState(() {
+                        disable = true;
+                      });
+                      print("Valoddddddddd");
+                      await uploadFile();
+                      await _request_service.add_request(
+                        details: _detailsController.text,
+                        status: dropDownValue,
+                        title: _requestNameController.text,
+                        imgUrl: imgUrl,
+                      );
+                      setState(() {
+                        disable = false;
+                      });
+                      return Alert(
+                        context: context,
+                        title: "تم اضافة طلبك بنجاح",
+                        desc:
+                            "شكرا لك علي استخدامك البرنامج,تم اضافة طلبك بنجاح",
+                        buttons: [
+                          DialogButton(
+                              child: Text(
+                                "انتقل للصفحه الرئيسيه",
+                                style: TextStyle(
+                                  fontFamily: ArabicFonts.Cairo,
+                                  package: 'google_fonts_arabic',
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                                Navigator.pushReplacementNamed(
+                                    context, Home_Screen.id);
+                              })
+                        ],
+                        style: AlertStyle(
+                            titleStyle: TextStyle(
+                                color: Colors.green,
+                                fontFamily: ArabicFonts.Tajawal,
+                                package: 'google_fonts_arabic',
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w800),
+                            animationType: AnimationType.shrink,
+                            descStyle: TextStyle(
+                                color: Colors.orange[900],
+                                fontFamily: ArabicFonts.Cairo,
+                                package: 'google_fonts_arabic',
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w600)),
+                        image: Image.asset(
+                          "assets/img/ok.png",
+                        ),
+                      ).show();
+                    }
                   },
                   minWidth: 200.0,
                   height: 42.0,
@@ -273,6 +345,7 @@ class _Request_ScreenState extends State<Request_Screen> {
                   ),
                 ),
               ),
+
               Dismissible(
                 child: Card(
                   shape: OutlineInputBorder(

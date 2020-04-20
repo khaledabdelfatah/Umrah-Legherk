@@ -11,8 +11,6 @@ class FAQ extends StatefulWidget {
 }
 //
 
- 
-
 //
 class _FAQState extends State<FAQ> {
   @override
@@ -47,16 +45,16 @@ class _FAQState extends State<FAQ> {
             child: ListView(children: [
               Dismissible(
                 child: Card(
-                        shape: OutlineInputBorder(
+                  shape: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30),
                       borderSide: BorderSide(
                           color: Colors.orange,
                           width: 2,
                           style: BorderStyle.solid)),
-                          color: Colors.blueGrey,
-                   child: Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: Text(
+                  color: Colors.blueGrey,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
                       'جميع مصادر الاجابات مذكوره وبمجرد الضغط عليها يتم تحويلك الي موقع الاجابه',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -67,8 +65,8 @@ class _FAQState extends State<FAQ> {
                         fontFamily: ArabicFonts.El_Messiri,
                         package: 'google_fonts_arabic',
                       ),
+                    ),
                   ),
-                   ),
                 ),
 
                 key: UniqueKey(),
@@ -126,7 +124,6 @@ class _FAQState extends State<FAQ> {
                       siteUrl:
                           'https://www.islamweb.net/ar/fatwa/121173/%D8%AD%D9%83%D9%85-%D9%87%D8%A8%D8%A9-%D8%AB%D9%88%D8%A7%D8%A8-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84-%D9%84%D9%84%D8%A3%D9%82%D8%B1%D8%A8%D8%A7%D8%A1-%D9%88%D8%BA%D9%8A%D8%B1%D9%87%D9%85',
                       src: 'اسلام ويب'),
-                   
                   Padding(padding: EdgeInsets.only(top: 5)),
                   faqCard(
                       context: context,
@@ -195,24 +192,25 @@ Card faqCard(
           package: 'google_fonts_arabic',
         ),
       ),
-      subtitle: Text("المصدر :- $src" ,
-      style: TextStyle(
-        color: Colors.orange,
-        fontWeight: FontWeight.w600,
+      subtitle: Text(
+        "المصدر :- $src",
+        style: TextStyle(
+          color: Colors.orange,
+          fontWeight: FontWeight.w600,
           fontFamily: ArabicFonts.Cairo,
           package: 'google_fonts_arabic',
-      ),),
+        ),
+      ),
       children: <Widget>[
         Text(
           answer,
           // textAlign: ,
           style: TextStyle(
-            letterSpacing: .5,
-            fontWeight: FontWeight.w600,
-            fontFamily: ArabicFonts.Changa,
-            package: 'google_fonts_arabic',
-            color: Colors.white
-          ),
+              letterSpacing: .5,
+              fontWeight: FontWeight.w600,
+              fontFamily: ArabicFonts.Changa,
+              package: 'google_fonts_arabic',
+              color: Colors.white),
         ),
         InkWell(
           onTap: () async {

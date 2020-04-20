@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 
 class GetTopVolounters {
   String x;
   Future getTopVoluntersData() async {
     var firestore = Firestore.instance;
-    var qn = await firestore.collection('users').where('number_ofVolunteering',isGreaterThanOrEqualTo: 1).getDocuments();
+    var qn = await firestore
+        .collection('users')
+        .where('number_ofVolunteering', isGreaterThanOrEqualTo: 1)
+        .getDocuments();
     return qn.documents;
   }
 
